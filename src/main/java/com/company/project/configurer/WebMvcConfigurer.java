@@ -2,9 +2,7 @@ package com.company.project.configurer;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,13 +15,17 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 
 import com.company.project.core.Result;
 import com.company.project.core.ResultCode;
+import com.company.project.core.ResultGenerator;
 import com.company.project.core.ServiceException;
+import com.company.project.utils.CookieUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -43,6 +45,11 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     private final Logger logger = LoggerFactory.getLogger(WebMvcConfigurer.class);
     @Value("${spring.profiles.active}")
     private String env;//当前激活的配置文件
+
+
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     //使用阿里 FastJson 作为JSON MessageConverter
     @Override
@@ -104,21 +111,27 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         //接口签名认证拦截器，该签名认证比较简单，实际项目中可以使用Json Web Token或其他更好的方式替代。
         if (!"dev".equals(env)) { //开发环境忽略签名认证
+            //String token = CookieUtil.getUid(registry,token);
+
+
             registry.addInterceptor(new HandlerInterceptorAdapter() {
                 @Override
                 public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+                    String token = CookieUtil.getUid(request,"token");
+                    String username = CookieUtil.getUid(request,"username");
+                    //String s = (String) redisTemplate.opsForHash().get(map,username);
+                    //System.out.println(s+111111111);
+                    // Boolean b = redisTemplate.opsForHash().hasKey(map,username);
+                    //System.out.println(b+"222222222");
+                    if (token == null){
+                        return false;
+                    }
                     //验证签名
-                    boolean pass = validateSign(request);
-                    if (pass) {
+                    //boolean pass = validateSign(request);
+                    if (true) {
                         return true;
                     } else {
-                        logger.warn("签名认证失败，请求接口：{}，请求IP：{}，请求参数：{}",
-                                request.getRequestURI(), getIpAddress(request), JSON.toJSONString(request.getParameterMap()));
-
-                        Result result = new Result();
-                        result.setCode(ResultCode.UNAUTHORIZED).setMessage("签名认证失败");
-                        responseResult(response, result);
-                        return false;
+                        return true;
                     }
                 }
             });

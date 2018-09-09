@@ -1,18 +1,25 @@
 package com.company.project.web;
+import com.company.project.core.Commins;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.model.User;
 import com.company.project.service.UserService;
 import com.company.project.utils.CookieUtil;
+import com.company.project.utils.TokenProccessor;
+import com.company.project.utils.TokenTools;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.parser.Cookie;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,24 +56,24 @@ public class UserController {
         return ResultGenerator.genSuccessResult(user);
     }
 
-
-    @GetMapping("/checkLogin")
-    public Result checkLogin(HttpServletRequest request) {
-        String s = CookieUtil.getUid(request,"token");
-        if (s != null){
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 
-        }
-        return ResultGenerator.genSuccessResult();
-    }
+    @GetMapping("logout")
+    public Result logout( HttpServletRequest request, HttpServletResponse response) {
+        String token = CookieUtil.getUid(request,"token");
+        String username = CookieUtil.getUid(request,"username");
 
-    //首页的登录功能
-    @PostMapping("/login")
-    public Result detail(HttpServletRequest request,HttpServletResponse response ,@RequestParam String username ,@RequestParam String password) {
-        Map map = userService.login(request, username,password);
-        System.out.println(132456);
-        return ResultGenerator.genSuccessResult(map.keySet());
+        String s = (String) redisTemplate.opsForHash().get(Commins.map,username);
+        System.out.println(s);
+        Boolean b = redisTemplate.opsForHash().hasKey(Commins.map,username);
+        System.out.println(b);
 
+
+        CookieUtil.removeCookie(response,"token");
+        CookieUtil.removeCookie(response,"username");
+        return ResultGenerator.genSuccessResult("退出成功！");
     }
 
     @GetMapping("/list")
