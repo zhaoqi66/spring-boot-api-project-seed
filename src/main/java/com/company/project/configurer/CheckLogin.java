@@ -26,8 +26,8 @@ import java.util.Map;
  * @Created By liuxiaoming
  * @CreateTime 2017/12/8 上午10:18
  **/
-@Aspect
-@Component
+/*@Aspect
+@Component*/
 @Slf4j
 public class CheckLogin {
 

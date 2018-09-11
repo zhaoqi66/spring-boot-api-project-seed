@@ -3,6 +3,7 @@ import com.company.project.model.User;
 import com.company.project.core.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 
@@ -11,5 +12,5 @@ import java.util.Map;
  */
 public interface UserService extends Service<User> {
 
-    User login( String username , String password);
+    List<User> login(User user);
 }

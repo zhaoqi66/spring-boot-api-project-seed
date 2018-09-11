@@ -32,6 +32,42 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    //User user = new User();
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    //首页的登录功能
+    @PostMapping("/login")
+    public Result detail(HttpServletRequest request, HttpServletResponse response , @RequestBody User user) {
+
+        System.out.println(user.getUsername() + user.getPassword());
+        if (user.getUsername()  == null ){
+            return ResultGenerator.genFailResult("用户名为空！");
+        }
+        if (user.getPassword() == null ){
+            return ResultGenerator.genFailResult("密码为空！");
+        }
+        List<User> list = userService.login(user);
+        System.out.println(list.size());
+
+        if (list.size() == 1){
+            String token  = TokenProccessor.getInstance().makeToken();
+            System.out.println("token : " + token);
+            TokenTools.createToken(request,token);
+            CookieUtil.addCookie(response,"token",token,60*60*24*3);
+            CookieUtil.addCookie(response,"username",user.getUsername(),60*60*24*3);
+            redisTemplate.opsForHash().put(Commins.map,user.getUsername(),token);
+
+            return ResultGenerator.genSuccessResult("登陆成功！");
+        }else{
+            return ResultGenerator.genFailResult("用户名或密码错误！");
+        }
+
+    }
+
+
+
     @PostMapping("/add")
     public Result add(User user) {
         userService.save(user);
@@ -55,9 +91,6 @@ public class UserController {
         User user = userService.findById(id);
         return ResultGenerator.genSuccessResult(user);
     }
-
-    @Autowired
-    private RedisTemplate redisTemplate;
 
 
     @GetMapping("logout")
