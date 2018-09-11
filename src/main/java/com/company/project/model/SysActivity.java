@@ -67,7 +67,7 @@ public class SysActivity {
      * 第一档金额
      */
     @Column(name = "first_money")
-    private BigDecimal firstMoney;
+    private Double firstMoney;
 
     /**
      * 第一档人气
@@ -79,7 +79,7 @@ public class SysActivity {
      * 第二档金额
      */
     @Column(name = "second_money")
-    private BigDecimal secondMoney;
+    private Double secondMoney;
 
     /**
      * 第二档人气
@@ -91,7 +91,7 @@ public class SysActivity {
      * 第三档金额
      */
     @Column(name = "third_money")
-    private BigDecimal thirdMoney;
+    private Double thirdMoney;
 
     /**
      * 第三档人气
@@ -280,7 +280,7 @@ public class SysActivity {
      *
      * @return first_money - 第一档金额
      */
-    public BigDecimal getFirstMoney() {
+    public Double getFirstMoney() {
         return firstMoney;
     }
 
@@ -289,7 +289,7 @@ public class SysActivity {
      *
      * @param firstMoney 第一档金额
      */
-    public void setFirstMoney(BigDecimal firstMoney) {
+    public void setFirstMoney(Double firstMoney) {
         this.firstMoney = firstMoney;
     }
 
@@ -316,7 +316,7 @@ public class SysActivity {
      *
      * @return second_money - 第二档金额
      */
-    public BigDecimal getSecondMoney() {
+    public Double getSecondMoney() {
         return secondMoney;
     }
 
@@ -325,7 +325,7 @@ public class SysActivity {
      *
      * @param secondMoney 第二档金额
      */
-    public void setSecondMoney(BigDecimal secondMoney) {
+    public void setSecondMoney(Double secondMoney) {
         this.secondMoney = secondMoney;
     }
 
@@ -352,7 +352,7 @@ public class SysActivity {
      *
      * @return third_money - 第三档金额
      */
-    public BigDecimal getThirdMoney() {
+    public Double getThirdMoney() {
         return thirdMoney;
     }
 
@@ -361,7 +361,7 @@ public class SysActivity {
      *
      * @param thirdMoney 第三档金额
      */
-    public void setThirdMoney(BigDecimal thirdMoney) {
+    public void setThirdMoney(Double thirdMoney) {
         this.thirdMoney = thirdMoney;
     }
 
