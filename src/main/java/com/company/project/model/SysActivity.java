@@ -6,6 +6,28 @@ import javax.persistence.*;
 
 @Table(name = "sys_activity")
 public class SysActivity {
+    @Override
+    public String toString() {
+        return "SysActivity{" +
+                "activityId=" + activityId +
+                ", activityName='" + activityName + '\'' +
+                ", activityTakeCount=" + activityTakeCount +
+                ", createTime=" + createTime +
+                ", deleteFlag=" + deleteFlag +
+                ", endTime=" + endTime +
+                ", modifiedTime=" + modifiedTime +
+                ", pic='" + pic + '\'' +
+                ", startTime=" + startTime +
+                ", activityStatus=" + activityStatus +
+                ", firstMoney=" + firstMoney +
+                ", firstRatio=" + firstRatio +
+                ", secondMoney=" + secondMoney +
+                ", secondRatio=" + secondRatio +
+                ", thirdMoney=" + thirdMoney +
+                ", thirdRatio=" + thirdRatio +
+                '}';
+    }
+
     @Id
     @Column(name = "activity_id")
     private Integer activityId;

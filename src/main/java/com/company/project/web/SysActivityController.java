@@ -5,10 +5,13 @@ import com.company.project.core.PageResult;
 import com.company.project.model.SysActivity;
 import com.company.project.service.SysActivityService;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +29,7 @@ import java.util.List;
 public class SysActivityController {
     @Autowired
     private SysActivityService sysActivityService;
-
+    private static final Logger logger = LoggerFactory.getLogger(SysActivityController.class);
     /**
      * 添加活动
      */
@@ -49,7 +52,9 @@ public class SysActivityController {
             @ApiImplicitParam(name = "thirdMoney", value = "第三档金额", required = true, dataType = "Double"),
             @ApiImplicitParam(name = "thirdRatio", value = "第三档人气", required = true, dataType = "Integer")}
     )
-    public JsonResult addActivity(SysActivity sysActivity) {
+    public JsonResult addActivity(@RequestBody SysActivity sysActivity) {
+        logger.info("添加活动接口SysActivity={}",sysActivity.toString());
+
         if (StringUtils.isEmpty(sysActivity)) {
             return JsonResult.error("活动信息添加错误，请仔细核对！！！");
         }
@@ -91,6 +96,7 @@ public class SysActivityController {
     )
     @ApiImplicitParam(name = "activityId", value = "活动ID", dataType = "Integer")
     public JsonResult deleteActivity(Integer activityId) {
+        logger.info("删除活动activityId=",activityId);
         if (StringUtils.isEmpty(activityId)) {
             return JsonResult.error("活动编号不能为空!!!");
         }
@@ -124,7 +130,8 @@ public class SysActivityController {
             @ApiImplicitParam(name = "endTime", value = "活动结束时间", required = true, dataType = "Date"),
             @ApiImplicitParam(name = "pic", value = "活动介绍", required = true, dataType = "String")}
     )
-    public JsonResult updateActivity(SysActivity sysActivity) {
+    public JsonResult updateActivity(@RequestBody SysActivity sysActivity) {
+        logger.info("修改活动接口SysActivity=",sysActivity.toString());
         if (StringUtils.isEmpty(sysActivity)) {
             return JsonResult.error("活动信息添加错误，请仔细核对！！！");
         }
@@ -163,7 +170,6 @@ public class SysActivityController {
             pageNum = 1;
             pageSize = 10;
         }
-
         return sysActivityService.listActivity(pageNum, pageSize);
     }
 
