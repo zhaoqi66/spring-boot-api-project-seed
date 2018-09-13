@@ -18,4 +18,6 @@ public interface UserApplyService{
     UserApply findOne(int id);
 
     void failUserApply(int id);
+
+    List<UserApplyDTO> findAllOrRank(Integer activityId);
 }

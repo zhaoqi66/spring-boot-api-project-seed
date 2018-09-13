@@ -1,6 +1,9 @@
 package com.company.project.service;
 import com.company.project.model.VoteOrder;
 import com.company.project.core.Service;
+import com.company.project.service.impl.DTO.VoteOrderDTO;
+
+import java.util.List;
 
 
 /**
@@ -8,4 +11,5 @@ import com.company.project.core.Service;
  */
 public interface VoteOrderService {
 
+    List<VoteOrderDTO> selectByActivityId(Integer activityId);
 }

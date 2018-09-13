@@ -42,6 +42,11 @@ public class UserApplyDTO {
      */
     private String status;
 
+    /**
+     * 总票数
+     */
+    private Long totalVotes;
+
     public UserApplyDTO() {
     }
 
@@ -55,5 +60,6 @@ public class UserApplyDTO {
         this.activityId = userApply.getActivityId();
         this.openId = userApply.getOpenId();
         this.status = userApply.getStatus();
+        this.totalVotes=userApply.getTotalVotes();
     }
 }
