@@ -9,19 +9,15 @@ import com.company.project.utils.TokenProccessor;
 import com.company.project.utils.TokenTools;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.tomcat.util.http.parser.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
 * Created by CodeGenerator on 2018/09/06.
@@ -31,8 +27,6 @@ import java.util.Map;
 public class UserController {
     @Resource
     private UserService userService;
-
-    //User user = new User();
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -52,6 +46,7 @@ public class UserController {
         System.out.println(list.size());
 
         if (list.size() == 1){
+
             String token  = TokenProccessor.getInstance().makeToken();
             System.out.println("token : " + token);
             TokenTools.createToken(request,token);
