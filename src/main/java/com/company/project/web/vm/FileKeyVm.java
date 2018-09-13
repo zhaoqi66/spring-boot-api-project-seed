@@ -1,4 +1,4 @@
-package com.company.project.vm;
+package com.company.project.web.vm;
 
 /**
  * @author FHZD.xiaoxun

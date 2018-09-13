@@ -4,7 +4,7 @@ import com.company.project.core.JsonResult;
 import com.company.project.core.PageResult;
 import com.company.project.model.SysActivity;
 import com.company.project.service.SysActivityService;
-import com.company.project.vm.SysActivityVm;
+import com.company.project.web.vm.SysActivityVm;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

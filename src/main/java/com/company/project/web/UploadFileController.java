@@ -3,7 +3,7 @@ package com.company.project.web;
 
 import com.company.project.core.JsonResult;
 import com.company.project.service.UploadFileService;
-import com.company.project.vm.FileKeyVm;
+import com.company.project.web.vm.FileKeyVm;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

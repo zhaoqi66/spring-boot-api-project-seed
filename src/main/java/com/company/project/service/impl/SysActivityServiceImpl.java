@@ -5,7 +5,7 @@ import com.company.project.dao.SysActivityMapper;
 import com.company.project.model.SysActivity;
 import com.company.project.model.SysActivityExample;
 import com.company.project.service.SysActivityService;
-import com.company.project.vm.SysActivityVm;
+import com.company.project.web.vm.SysActivityVm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.beanutils.BeanUtils;

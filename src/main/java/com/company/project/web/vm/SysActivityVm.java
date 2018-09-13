@@ -1,6 +1,5 @@
-package com.company.project.vm;
+package com.company.project.web.vm;
 
-import javax.persistence.Column;
 import java.util.Date;
 
 /**
