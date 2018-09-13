@@ -56,7 +56,9 @@ public class SysActivityServiceImpl implements SysActivityService {
         sysActivity.setActivityTakeCount(0);
         //设置删除标记    默认为1正常
         sysActivity.setDeleteFlag((byte) 1);
-
+        //改变存储路径
+        String all = sysActivity.getPic().replaceAll("[\\[\\]]", "");
+        sysActivity.setPic(all);
         int insert = sysActivityMapper.insert(sysActivity);
         if (insert > 0) {
             return true;

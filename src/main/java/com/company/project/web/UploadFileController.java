@@ -3,14 +3,12 @@ package com.company.project.web;
 
 import com.company.project.core.JsonResult;
 import com.company.project.service.UploadFileService;
+import com.company.project.vm.FileKeyVm;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -45,11 +43,11 @@ public class UploadFileController {
         return JsonResult.ok(uploadFile);
     }
 
-    @DeleteMapping("/picture/delete")
+    @PostMapping("/picture/delete")
     @ApiOperation(value = "图片删除")
-    public JsonResult deletePicture(String fileKey) {
-        logger.info("============>图片删除 fileKey={}", fileKey);
-        String deletePicture = uploadFileService.deletePicture(fileKey);
+    public JsonResult deletePicture(@RequestBody FileKeyVm vm) {
+        logger.info("============>图片删除 FileKeyVm={}", vm);
+        String deletePicture = uploadFileService.deletePicture(vm.getFileKey());
         return JsonResult.ok(deletePicture);
     }
 
