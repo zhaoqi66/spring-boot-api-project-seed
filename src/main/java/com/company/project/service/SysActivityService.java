@@ -4,6 +4,7 @@ import com.company.project.core.PageResult;
 import com.company.project.model.SysActivity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by CodeGenerator on 2018/09/10.
@@ -20,5 +21,7 @@ public interface SysActivityService {
 
     boolean updateActivity(SysActivity sysActivity);
 
-    PageResult<SysActivity> listActivity(Integer pageNum, Integer pageSize);
+    Map<String, Object> listActivity(Integer pageNum, Integer pageSize);
+
+    PageResult<SysActivity> listAll();
 }

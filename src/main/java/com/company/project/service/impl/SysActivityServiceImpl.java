@@ -5,13 +5,15 @@ import com.company.project.dao.SysActivityMapper;
 import com.company.project.model.SysActivity;
 import com.company.project.model.SysActivityExample;
 import com.company.project.service.SysActivityService;
+import com.company.project.vm.SysActivityVm;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by CodeGenerator on 2018/09/10.
@@ -89,6 +91,9 @@ public class SysActivityServiceImpl implements SysActivityService {
     public boolean deleteActivity(SysActivity sysActivity) {
         //设置删除标记    0删除
         sysActivity.setDeleteFlag((byte) 0);
+        //改变存储路径
+        String all = sysActivity.getPic().replaceAll("[\\[\\]]", "");
+        sysActivity.setPic(all);
         Integer i = sysActivityMapper.updateByPrimaryKeySelective(sysActivity);
         if (i > 0) {
             return true;
@@ -114,18 +119,50 @@ public class SysActivityServiceImpl implements SysActivityService {
         }
     }
 
+    /**
+     * 查询所有活动 分页
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @Override
-    public PageResult<SysActivity> listActivity(Integer pageNum, Integer pageSize) {
+    public Map<String, Object> listActivity(Integer pageNum, Integer pageSize) {
         //构造分页条件
         PageHelper.startPage(pageNum, pageSize);
         //构造查询条件
         SysActivityExample sysActivityExample = new SysActivityExample();
         sysActivityExample.createCriteria().andDeleteFlagEqualTo((byte) 1);
-        sysActivityExample.setOrderByClause("activity_status asc");
+        sysActivityExample.setOrderByClause("activity_status asc,create_time desc");
+
+        List<SysActivity> sysActivities = sysActivityMapper.selectByExample(sysActivityExample);
+        ArrayList<SysActivityVm> sysActivityVms = new ArrayList<>();
+        try {
+            for (SysActivity sysActivity : sysActivities) {
+                SysActivityVm sysActivityVm = new SysActivityVm();
+                BeanUtils.copyProperties(sysActivityVm, sysActivity);
+                sysActivityVms.add(sysActivityVm);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        PageInfo pageInfo = new PageInfo(sysActivityVms);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("count",pageInfo.getTotal());
+        map.put("data",pageInfo.getList());
+        map.put("pageNum",pageInfo.getPageNum());
+        map.put("pageSize",pageInfo.getPageSize());
+        return map;
+
+    }
+
+    @Override
+    public PageResult<SysActivity> listAll() {
+        SysActivityExample sysActivityExample = new SysActivityExample();
+        sysActivityExample.createCriteria().andDeleteFlagEqualTo((byte) 1);
+        sysActivityExample.setOrderByClause("activity_status asc,create_time desc");
 
         List<SysActivity> sysActivities = sysActivityMapper.selectByExample(sysActivityExample);
         return new PageResult<>(sysActivities);
     }
-
 
 }

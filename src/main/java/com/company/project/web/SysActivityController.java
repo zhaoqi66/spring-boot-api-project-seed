@@ -4,7 +4,8 @@ import com.company.project.core.JsonResult;
 import com.company.project.core.PageResult;
 import com.company.project.model.SysActivity;
 import com.company.project.service.SysActivityService;
-import io.swagger.annotations.*;
+import com.company.project.vm.SysActivityVm;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by CodeGenerator on 2018/09/10.
  */
-@Api(description = "活动相关的接口", value="/sys/activity")
 @RestController
 @RequestMapping("/sys/activity")
 @EnableScheduling
@@ -30,30 +31,13 @@ public class SysActivityController {
     @Autowired
     private SysActivityService sysActivityService;
     private static final Logger logger = LoggerFactory.getLogger(SysActivityController.class);
+
     /**
      * 添加活动
      */
     @RequestMapping(value = "/addActivity", method = RequestMethod.POST)
-    @ApiOperation(value = "添加活动", response = JsonResult.class,httpMethod = "POST")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "添加活动成功"),
-            @ApiResponse(code = 500, message = "添加活动失败")
-    }
-    )
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "activityName", value = "活动名称", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "startTime", value = "活动开始时间", required = true, dataType = "Date"),
-            @ApiImplicitParam(name = "endTime", value = "活动结束时间", required = true, dataType = "Date"),
-            @ApiImplicitParam(name = "pic", value = "活动规则", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "firstMoney", value = "第一档金额", required = true, dataType = "Double"),
-            @ApiImplicitParam(name = "firstRatio", value = "第一档人气", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "secondMoney", value = "第二档金额", required = true, dataType = "Double"),
-            @ApiImplicitParam(name = "secondRatio", value = "第二档人气", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "thirdMoney", value = "第三档金额", required = true, dataType = "Double"),
-            @ApiImplicitParam(name = "thirdRatio", value = "第三档人气", required = true, dataType = "Integer")}
-    )
     public JsonResult addActivity(@RequestBody SysActivity sysActivity) {
-        logger.info("添加活动接口SysActivity={}",sysActivity.toString());
+        logger.info("添加活动接口SysActivity={}", sysActivity.toString());
 
         if (StringUtils.isEmpty(sysActivity)) {
             return JsonResult.error("活动信息添加错误，请仔细核对！！！");
@@ -88,15 +72,8 @@ public class SysActivityController {
      * 删除活动
      */
     @RequestMapping(value = "/deleteActivity", method = RequestMethod.POST)
-    @ApiOperation(value = "删除活动", response = JsonResult.class,httpMethod = "POST")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "删除活动成功"),
-            @ApiResponse(code = 500, message = "删除活动失败")
-    }
-    )
-    @ApiImplicitParam(name = "activityId", value = "活动ID", dataType = "Integer")
     public JsonResult deleteActivity(Integer activityId) {
-        logger.info("删除活动activityId=",activityId);
+        logger.info("删除活动activityId=", activityId);
         if (StringUtils.isEmpty(activityId)) {
             return JsonResult.error("活动编号不能为空!!!");
         }
@@ -118,20 +95,8 @@ public class SysActivityController {
      * 修改活动
      */
     @RequestMapping(value = "/updateActivity", method = RequestMethod.POST)
-    @ApiOperation(value = "修改活动", response = JsonResult.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "修改活动成功"),
-            @ApiResponse(code = 500, message = "修改活动失败")
-    })
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "activityId", value = "活动ID",required = true,  dataType = "Integer"),
-            @ApiImplicitParam(name = "activityName", value = "活动名称", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "startTime", value = "活动开始时间", required = true, dataType = "Date"),
-            @ApiImplicitParam(name = "endTime", value = "活动结束时间", required = true, dataType = "Date"),
-            @ApiImplicitParam(name = "pic", value = "活动介绍", required = true, dataType = "String")}
-    )
     public JsonResult updateActivity(@RequestBody SysActivity sysActivity) {
-        logger.info("修改活动接口SysActivity=",sysActivity.toString());
+        logger.info("修改活动接口SysActivity=", sysActivity.toString());
         if (StringUtils.isEmpty(sysActivity)) {
             return JsonResult.error("活动信息添加错误，请仔细核对！！！");
         }
@@ -160,12 +125,7 @@ public class SysActivityController {
      * 查询所有活动
      */
     @RequestMapping(value = "/listActivity", method = RequestMethod.POST)
-    @ApiOperation(value = "查询所有活动")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum", value = "第几页", required = false, dataType = "Integer"),
-            @ApiImplicitParam(name = "pageSize", value = "每页多少条", required = false, dataType = "Integer")
-    })
-    public PageResult<SysActivity> listActivity(Integer pageNum, Integer pageSize) {
+    public Map<String, Object> listActivity(Integer pageNum, Integer pageSize) {
         if (pageNum == null) {
             pageNum = 1;
             pageSize = 10;
@@ -173,6 +133,27 @@ public class SysActivityController {
         return sysActivityService.listActivity(pageNum, pageSize);
     }
 
+    @RequestMapping(value = "/listAll", method = RequestMethod.POST)
+    public PageResult<SysActivity> listAll() {
+        return sysActivityService.listAll();
+    }
+
+    /**
+     * 根据活动ID 返回活动对象
+     * @param activityId
+     * @return
+     */
+    @RequestMapping(value = "/selectById", method = RequestMethod.POST)
+    public SysActivityVm selectById(Integer activityId) {
+        SysActivity sysActivity = sysActivityService.selectByActicityId(activityId);
+        SysActivityVm sysActivityVm = new SysActivityVm();
+        try {
+            BeanUtils.copyProperties(sysActivityVm, sysActivity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sysActivityVm;
+    }
 
     /**
      * 活动过期
