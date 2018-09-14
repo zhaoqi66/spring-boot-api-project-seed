@@ -5,58 +5,49 @@ import java.util.Date;
 
 /**
  * @author FHZD.xiaoxun
- * @date 2018/9/14
+ * @date 2018/9/13
  */
-public class SysActivityVm {
-    /**
-     * 活动名称
-     */
+public class SysActivityVA {
+
+    private Integer activityId;
+
     private String activityName;
 
-    /**
-     * 活动结束时间
-     */
+    private Integer activityTakeCount;
+
+    private Date createTime;
+
+    private Byte deleteFlag;
+
     private Date endTime;
 
-    /**
-     * 活动规则
-     */
+    private Date modifiedTime;
+
     private String[] pic;
 
-    /**
-     * 活动开始时间
-     */
     private Date startTime;
 
-    /**
-     * 第一档金额
-     */
+    private Byte activityStatus;
+
     private Double firstMoney;
 
-    /**
-     * 第一档人气
-     */
     private Integer firstRatio;
 
-    /**
-     * 第二档金额
-     */
     private Double secondMoney;
 
-    /**
-     * 第二档人气
-     */
     private Integer secondRatio;
 
-    /**
-     * 第三档金额
-     */
     private Double thirdMoney;
 
-    /**
-     * 第三档人气
-     */
     private Integer thirdRatio;
+
+    public Integer getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
+    }
 
     public String getActivityName() {
         return activityName;
@@ -66,12 +57,44 @@ public class SysActivityVm {
         this.activityName = activityName;
     }
 
+    public Integer getActivityTakeCount() {
+        return activityTakeCount;
+    }
+
+    public void setActivityTakeCount(Integer activityTakeCount) {
+        this.activityTakeCount = activityTakeCount;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Byte getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(Byte deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
     public Date getEndTime() {
         return endTime;
     }
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Date getModifiedTime() {
+        return modifiedTime;
+    }
+
+    public void setModifiedTime(Date modifiedTime) {
+        this.modifiedTime = modifiedTime;
     }
 
     public String[] getPic() {
@@ -88,6 +111,14 @@ public class SysActivityVm {
 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
+    }
+
+    public Byte getActivityStatus() {
+        return activityStatus;
+    }
+
+    public void setActivityStatus(Byte activityStatus) {
+        this.activityStatus = activityStatus;
     }
 
     public Double getFirstMoney() {
@@ -141,10 +172,16 @@ public class SysActivityVm {
     @Override
     public String toString() {
         return "SysActivityVm{" +
-                "activityName='" + activityName + '\'' +
+                "activityId=" + activityId +
+                ", activityName='" + activityName + '\'' +
+                ", activityTakeCount=" + activityTakeCount +
+                ", createTime=" + createTime +
+                ", deleteFlag=" + deleteFlag +
                 ", endTime=" + endTime +
+                ", modifiedTime=" + modifiedTime +
                 ", pic=" + Arrays.toString(pic) +
                 ", startTime=" + startTime +
+                ", activityStatus=" + activityStatus +
                 ", firstMoney=" + firstMoney +
                 ", firstRatio=" + firstRatio +
                 ", secondMoney=" + secondMoney +

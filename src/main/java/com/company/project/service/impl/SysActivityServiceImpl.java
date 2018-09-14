@@ -5,6 +5,7 @@ import com.company.project.dao.SysActivityMapper;
 import com.company.project.model.SysActivity;
 import com.company.project.model.SysActivityExample;
 import com.company.project.service.SysActivityService;
+import com.company.project.service.impl.DTO.SysActivityDTO;
 import com.company.project.web.vm.SysActivityVm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -44,12 +46,19 @@ public class SysActivityServiceImpl implements SysActivityService {
 
     /**
      * 添加活动
-     *
-     * @param sysActivity
-     * @return
      */
     @Override
-    public boolean addActivity(SysActivity sysActivity) {
+    public boolean addActivity(SysActivityVm sysActivityVm) {
+        String[] p = sysActivityVm.getPic();
+        String s = new String();
+        for (int i = 0; i < p.length; i++) {
+            if (i == p.length - 1) {
+                s = s + p[i];
+            } else {
+                s = s + p[i] + ",";
+            }
+        }
+        SysActivity sysActivity = new SysActivity();
         //设置活动创建时间
         sysActivity.setCreateTime(new Date());
         //设置活动状态0活动报名中 1活动已结束
@@ -58,9 +67,16 @@ public class SysActivityServiceImpl implements SysActivityService {
         sysActivity.setActivityTakeCount(0);
         //设置删除标记    默认为1正常
         sysActivity.setDeleteFlag((byte) 1);
-        //改变存储路径
-        String all = sysActivity.getPic().replaceAll("[\\[\\]]", "");
-        sysActivity.setPic(all);
+        try {
+            BeanUtils.copyProperties(sysActivity, sysActivityVm);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        //设置图片路径
+        sysActivity.setPic(s);
+
         int insert = sysActivityMapper.insert(sysActivity);
         if (insert > 0) {
             return true;
@@ -71,9 +87,6 @@ public class SysActivityServiceImpl implements SysActivityService {
 
     /**
      * 根据活动ID 查询活动
-     *
-     * @param activityId
-     * @return
      */
     @Override
     public SysActivity selectByActicityId(Integer activityId) {
@@ -83,17 +96,11 @@ public class SysActivityServiceImpl implements SysActivityService {
 
     /**
      * 删除活动
-     *
-     * @param sysActivity
-     * @return
      */
     @Override
     public boolean deleteActivity(SysActivity sysActivity) {
         //设置删除标记    0删除
         sysActivity.setDeleteFlag((byte) 0);
-        //改变存储路径
-        String all = sysActivity.getPic().replaceAll("[\\[\\]]", "");
-        sysActivity.setPic(all);
         Integer i = sysActivityMapper.updateByPrimaryKeySelective(sysActivity);
         if (i > 0) {
             return true;
@@ -104,9 +111,6 @@ public class SysActivityServiceImpl implements SysActivityService {
 
     /**
      * 更新活动
-     *
-     * @param sysActivity
-     * @return
      */
     @Override
     public boolean updateActivity(SysActivity sysActivity) {
@@ -121,6 +125,7 @@ public class SysActivityServiceImpl implements SysActivityService {
 
     /**
      * 查询所有活动 分页
+     *
      * @param pageNum
      * @param pageSize
      * @return
@@ -135,22 +140,16 @@ public class SysActivityServiceImpl implements SysActivityService {
         sysActivityExample.setOrderByClause("activity_status asc,create_time desc");
 
         List<SysActivity> sysActivities = sysActivityMapper.selectByExample(sysActivityExample);
-        ArrayList<SysActivityVm> sysActivityVms = new ArrayList<>();
-        try {
-            for (SysActivity sysActivity : sysActivities) {
-                SysActivityVm sysActivityVm = new SysActivityVm();
-                BeanUtils.copyProperties(sysActivityVm, sysActivity);
-                sysActivityVms.add(sysActivityVm);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        ArrayList<SysActivityDTO> sysActivityDTOS = new ArrayList<>();
+        if (sysActivities.size() > 0) {
+            copyList(sysActivities, sysActivityDTOS);
         }
-        PageInfo pageInfo = new PageInfo(sysActivityVms);
+        PageInfo pageInfo = new PageInfo(sysActivities);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("count",pageInfo.getTotal());
-        map.put("data",pageInfo.getList());
-        map.put("pageNum",pageInfo.getPageNum());
-        map.put("pageSize",pageInfo.getPageSize());
+        map.put("count", pageInfo.getTotal());
+        map.put("data", sysActivityDTOS);
+        map.put("pageNum", pageInfo.getPageNum());
+        map.put("pageSize", pageInfo.getPageSize());
         return map;
 
     }
@@ -163,6 +162,23 @@ public class SysActivityServiceImpl implements SysActivityService {
 
         List<SysActivity> sysActivities = sysActivityMapper.selectByExample(sysActivityExample);
         return new PageResult<>(sysActivities);
+    }
+
+    @Override
+    public SysActivityDTO findOne(Integer activityId) {
+        SysActivity sysActivity = sysActivityMapper.selectByPrimaryKey(activityId);
+        String[] pics = sysActivity.getPic().split(",");
+        SysActivityDTO sysActivityDTO = new SysActivityDTO(sysActivity,pics);
+        return sysActivityDTO;
+    }
+
+    private ArrayList<SysActivityDTO> copyList(List<SysActivity> sysActivities, ArrayList<SysActivityDTO> sysActivityDTOS) {
+        for (SysActivity sysActivity : sysActivities) {
+            String[] pics = sysActivity.getPic().split(",");
+            SysActivityDTO sysActivityDTO = new SysActivityDTO(sysActivity,pics);
+            sysActivityDTOS.add(sysActivityDTO);
+        }
+        return sysActivityDTOS;
     }
 
 }
