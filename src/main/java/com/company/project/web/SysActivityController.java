@@ -6,6 +6,7 @@ import com.company.project.core.ResultGenerator;
 import com.company.project.model.SysActivity;
 import com.company.project.service.SysActivityService;
 import com.company.project.service.impl.DTO.SysActivityDTO;
+import com.company.project.web.vm.SysActivityVA;
 import com.company.project.web.vm.SysActivityVm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,29 +97,9 @@ public class SysActivityController {
      * 修改活动
      */
     @RequestMapping(value = "/updateActivity", method = RequestMethod.POST)
-    public Result updateActivity(@RequestBody SysActivity sysActivity) {
-        logger.info("修改活动接口SysActivity=", sysActivity.toString());
-        if (StringUtils.isEmpty(sysActivity)) {
-            return ResultGenerator.genFailResult("活动信息添加错误，请仔细核对！！！");
-        }
-        if (StringUtils.isEmpty(sysActivity.getActivityName())) {
-            return ResultGenerator.genFailResult("活动名称不能为空！！！");
-        }
-        if (StringUtils.isEmpty(sysActivity.getPic())) {
-            return ResultGenerator.genFailResult("活动内容不能为空！！！");
-        }
-        if (StringUtils.isEmpty(sysActivity.getStartTime())) {
-            return ResultGenerator.genFailResult("活动开始时间不能为空！！");
-        }
-        if (StringUtils.isEmpty(sysActivity.getEndTime())) {
-            return ResultGenerator.genFailResult("活动结束时间不能为空！！！");
-        }
-
-        if (sysActivityService.updateActivity(sysActivity)) {
-            return ResultGenerator.genSuccessResult("修改成功");
-        } else {
-            return ResultGenerator.genFailResult("修改失败");
-        }
+    public Result updateActivity(@RequestBody SysActivityVA sysActivityVa) {
+        logger.info("修改活动接口SysActivity=", sysActivityVa.toString());
+        return sysActivityService.updateActivity(sysActivityVa);
     }
 
     /**
@@ -156,16 +137,6 @@ public class SysActivityController {
      */
     @Scheduled(cron = "0 0/5 * * * ?")
     protected void autoUpdate() {
-        //获取当前时间
-        Date date = new Date();
-        //查询所有未过期的活动
-        List<SysActivity> list = sysActivityService.selectByActivityStatus();
-        for (SysActivity sysActivity : list) {
-            if (date.after(sysActivity.getEndTime())) {
-                //如果结束时间 已经过了 设置活动过期
-                sysActivity.setActivityStatus((byte) 1);
-                sysActivityService.updateActivity(sysActivity);
-            }
-        }
+        sysActivityService.autoUpdate();
     }
 }

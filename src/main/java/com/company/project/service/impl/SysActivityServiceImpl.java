@@ -1,11 +1,14 @@
 package com.company.project.service.impl;
 
 import com.company.project.core.PageResult;
+import com.company.project.core.Result;
+import com.company.project.core.ResultGenerator;
 import com.company.project.dao.SysActivityMapper;
 import com.company.project.model.SysActivity;
 import com.company.project.model.SysActivityExample;
 import com.company.project.service.SysActivityService;
 import com.company.project.service.impl.DTO.SysActivityDTO;
+import com.company.project.web.vm.SysActivityVA;
 import com.company.project.web.vm.SysActivityVm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -13,6 +16,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -69,9 +73,7 @@ public class SysActivityServiceImpl implements SysActivityService {
         sysActivity.setDeleteFlag((byte) 1);
         try {
             BeanUtils.copyProperties(sysActivity, sysActivityVm);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //设置图片路径
@@ -113,13 +115,46 @@ public class SysActivityServiceImpl implements SysActivityService {
      * 更新活动
      */
     @Override
-    public boolean updateActivity(SysActivity sysActivity) {
+    public Result updateActivity(SysActivityVA sysActivityVa) {
+        if (StringUtils.isEmpty(sysActivityVa)) {
+            return ResultGenerator.genFailResult("活动信息添加错误，请仔细核对！！！");
+        }
+        if (StringUtils.isEmpty(sysActivityVa.getActivityName())) {
+            return ResultGenerator.genFailResult("活动名称不能为空！！！");
+        }
+        if (StringUtils.isEmpty(sysActivityVa.getPic())) {
+            return ResultGenerator.genFailResult("活动内容不能为空！！！");
+        }
+        if (StringUtils.isEmpty(sysActivityVa.getStartTime())) {
+            return ResultGenerator.genFailResult("活动开始时间不能为空！！");
+        }
+        if (StringUtils.isEmpty(sysActivityVa.getEndTime())) {
+            return ResultGenerator.genFailResult("活动结束时间不能为空！！！");
+        }
+        String[] p = sysActivityVa.getPic();
+        String s = new String();
+        for (int i = 0; i < p.length; i++) {
+            if (i == p.length - 1) {
+                s = s + p[i];
+            } else {
+                s = s + p[i] + ",";
+            }
+        }
+        SysActivity sysActivity = new SysActivity();
+        try {
+            BeanUtils.copyProperties(sysActivity, sysActivityVa);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //设置图片路径
+        sysActivity.setPic(s);
         sysActivity.setModifiedTime(new Date());
-        Integer i = sysActivityMapper.updateByPrimaryKeySelective(sysActivity);
+        int i = sysActivityMapper.updateByPrimaryKeySelective(sysActivity);
+
         if (i > 0) {
-            return true;
+            return ResultGenerator.genSuccessResult();
         } else {
-            return false;
+            return ResultGenerator.genFailResult("更新活动失败!!!");
         }
     }
 
@@ -170,6 +205,22 @@ public class SysActivityServiceImpl implements SysActivityService {
         String[] pics = sysActivity.getPic().split(",");
         SysActivityDTO sysActivityDTO = new SysActivityDTO(sysActivity,pics);
         return sysActivityDTO;
+    }
+
+    @Override
+    public void autoUpdate() {
+        //获取当前时间
+        Date date = new Date();
+        //查询所有未过期的活动
+        List<SysActivity> sysActivities = selectByActivityStatus();
+        for (SysActivity sysActivity : sysActivities) {
+            if (date.after(sysActivity.getEndTime())) {
+                //如果结束时间 已经过了 设置活动过期
+                sysActivity.setActivityStatus((byte) 1);
+                sysActivity.setModifiedTime(date);
+                sysActivityMapper.updateByPrimaryKeySelective(sysActivity);
+            }
+        }
     }
 
     private ArrayList<SysActivityDTO> copyList(List<SysActivity> sysActivities, ArrayList<SysActivityDTO> sysActivityDTOS) {

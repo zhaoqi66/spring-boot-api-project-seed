@@ -1,8 +1,10 @@
 package com.company.project.service;
 
 import com.company.project.core.PageResult;
+import com.company.project.core.Result;
 import com.company.project.model.SysActivity;
 import com.company.project.service.impl.DTO.SysActivityDTO;
+import com.company.project.web.vm.SysActivityVA;
 import com.company.project.web.vm.SysActivityVm;
 
 import java.util.List;
@@ -21,11 +23,13 @@ public interface SysActivityService {
 
     boolean deleteActivity(SysActivity sysActivity);
 
-    boolean updateActivity(SysActivity sysActivity);
+    Result updateActivity(SysActivityVA sysActivityVa);
 
     Map<String, Object> listActivity(Integer pageNum, Integer pageSize);
 
     PageResult<SysActivity> listAll();
 
     SysActivityDTO findOne(Integer activityId);
+
+    void autoUpdate();
 }

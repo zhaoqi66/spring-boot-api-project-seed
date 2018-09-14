@@ -68,7 +68,7 @@ public class UserApplyServiceImpl implements UserApplyService {
     public List<UserApplyDTO> findAllOrRank(Integer activityId) {
         UserApplyExample userApplyExample = new UserApplyExample();
         //查询审核通过的报名信息
-        userApplyExample.createCriteria().andStatusEqualTo("3").andActivityIdEqualTo(activityId);
+        userApplyExample.createCriteria().andStatusEqualTo("2").andActivityIdEqualTo(activityId);
         userApplyExample.setOrderByClause("total_votes desc");
         List<UserApply> userApplies = userApplyMapper.selectByExample(userApplyExample);
 
