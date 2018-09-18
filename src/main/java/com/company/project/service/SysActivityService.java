@@ -32,4 +32,6 @@ public interface SysActivityService {
     SysActivityDTO findOne(Integer activityId);
 
     void autoUpdate();
+
+    Result findNew();
 }

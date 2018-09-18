@@ -3,6 +3,8 @@ package com.company.project.service.impl.DTO;
 import com.company.project.model.UserApply;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class UserApplyDTO {
     /**
@@ -13,6 +15,10 @@ public class UserApplyDTO {
      * 活动参与者姓名
      */
     private String name;
+    /**
+     * 报名参加活动时间
+     */
+    private Date applyTime;
     /**
      * 性别 0-女 1-男
      */
@@ -53,6 +59,7 @@ public class UserApplyDTO {
     public UserApplyDTO(UserApply userApply, String[] pic) {
         this.id = userApply.getId();
         this.name = userApply.getName();
+        this.applyTime = userApply.getApplyTime();
         this.gerder = userApply.getGerder();
         this.phone = userApply.getPhone();
         this.description = userApply.getDescription();
@@ -60,6 +67,6 @@ public class UserApplyDTO {
         this.activityId = userApply.getActivityId();
         this.openId = userApply.getOpenId();
         this.status = userApply.getStatus();
-        this.totalVotes=userApply.getTotalVotes();
+        this.totalVotes = userApply.getTotalVotes();
     }
 }

@@ -133,6 +133,17 @@ public class SysActivityController {
     }
 
     /**
+     * 返回当前活动对象
+     *
+     * @return
+     */
+    @RequestMapping(value = "/findNew", method = RequestMethod.POST)
+    public Result findNew() {
+        logger.info("返回当前活动对象");
+        return sysActivityService.findNew();
+    }
+
+    /**
      * 活动过期
      */
     @Scheduled(cron = "0 0/5 * * * ?")

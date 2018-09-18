@@ -203,7 +203,7 @@ public class SysActivityServiceImpl implements SysActivityService {
     public SysActivityDTO findOne(Integer activityId) {
         SysActivity sysActivity = sysActivityMapper.selectByPrimaryKey(activityId);
         String[] pics = sysActivity.getPic().split(",");
-        SysActivityDTO sysActivityDTO = new SysActivityDTO(sysActivity,pics);
+        SysActivityDTO sysActivityDTO = new SysActivityDTO(sysActivity, pics);
         return sysActivityDTO;
     }
 
@@ -223,10 +223,29 @@ public class SysActivityServiceImpl implements SysActivityService {
         }
     }
 
+    @Override
+    public Result findNew() {
+        //构建查询条件
+        SysActivityExample sysActivityExample = new SysActivityExample();
+        SysActivityExample.Criteria criteria = sysActivityExample.createCriteria();
+        //活动未删除 且活动正在报名
+        criteria.andDeleteFlagEqualTo((byte) 1).andActivityStatusEqualTo((byte) 0);
+
+        List<SysActivity> sysActivities = sysActivityMapper.selectByExample(sysActivityExample);
+        if (sysActivities.size()==0){
+            return ResultGenerator.genFailResult("当前没有进行中的活动");
+        }else if (sysActivities.size() > 1){
+            return ResultGenerator.genFailResult("当前活动异常");
+        }
+        ArrayList<SysActivityDTO> sysActivityDTOS = new ArrayList<>();
+        copyList(sysActivities,sysActivityDTOS);
+        return ResultGenerator.genSuccessResult(sysActivityDTOS.get(0));
+    }
+
     private ArrayList<SysActivityDTO> copyList(List<SysActivity> sysActivities, ArrayList<SysActivityDTO> sysActivityDTOS) {
         for (SysActivity sysActivity : sysActivities) {
             String[] pics = sysActivity.getPic().split(",");
-            SysActivityDTO sysActivityDTO = new SysActivityDTO(sysActivity,pics);
+            SysActivityDTO sysActivityDTO = new SysActivityDTO(sysActivity, pics);
             sysActivityDTOS.add(sysActivityDTO);
         }
         return sysActivityDTOS;
