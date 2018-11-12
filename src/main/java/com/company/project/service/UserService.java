@@ -12,5 +12,5 @@ import java.util.Map;
  */
 public interface UserService extends Service<User> {
 
-    List<User> login(User user);
+    List<User> login(String username);
 }

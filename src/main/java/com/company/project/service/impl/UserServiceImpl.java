@@ -24,10 +24,10 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     private UserMapper userMapper;
 
     @Override
-    public List<User> login(User user) {
+    public List<User> login(String username) {
 
-        System.out.println("username : " +user.getUsername());
-        System.out.println("password : " +user.getUsername());
+        User user = new User();
+        user.setUsername(username);
         return  userMapper.select(user);
 
     }

@@ -122,7 +122,6 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                     //String s = (String) redisTemplate.opsForHash().get(map,username);
                     //System.out.println(s+111111111);
                     // Boolean b = redisTemplate.opsForHash().hasKey(map,username);
-                    //System.out.println(b+"222222222");
                     if (token == null){
                         return false;
                     }

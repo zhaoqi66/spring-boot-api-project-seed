@@ -7,6 +7,7 @@ import com.company.project.service.UserService;
 import com.company.project.utils.CookieUtil;
 import com.company.project.utils.TokenProccessor;
 import com.company.project.utils.TokenTools;
+import com.company.project.web.vm.UserVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,43 +26,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    @Resource
+
+    @Autowired
     private UserService userService;
 
     @Autowired
     private RedisTemplate redisTemplate;
-
-    //首页的登录功能
-    @PostMapping("/login")
-    public Result detail(HttpServletRequest request, HttpServletResponse response , @RequestBody User user) {
-
-        System.out.println(user.getUsername() + user.getPassword());
-        if (user.getUsername()  == null ){
-            return ResultGenerator.genFailResult("用户名为空！");
-        }
-        if (user.getPassword() == null ){
-            return ResultGenerator.genFailResult("密码为空！");
-        }
-        List<User> list = userService.login(user);
-        System.out.println(list.size());
-
-        if (list.size() == 1){
-
-            String token  = TokenProccessor.getInstance().makeToken();
-            System.out.println("token : " + token);
-            TokenTools.createToken(request,token);
-            CookieUtil.addCookie(response,"token",token,60*60*24*3);
-            CookieUtil.addCookie(response,"username",user.getUsername(),60*60*24*3);
-            redisTemplate.opsForHash().put(Commins.map,user.getUsername(),token);
-
-            return ResultGenerator.genSuccessResult("登陆成功！");
-        }else{
-            return ResultGenerator.genFailResult("用户名或密码错误！");
-        }
-
-    }
-
-
 
     @PostMapping("/add")
     public Result add(User user) {
