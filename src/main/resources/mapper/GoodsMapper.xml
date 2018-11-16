@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.project.dao.GoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.company.project.model.Goods" >
+    <id column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_img" property="goodsImg" jdbcType="VARCHAR" />
+    <result column="goods_price" property="goodsPrice" jdbcType="DECIMAL" />
+    <result column="goods_num" property="goodsNum" jdbcType="INTEGER" />
+    <result column="goods_sort" property="goodsSort" jdbcType="INTEGER" />
+    <result column="goods_create_time" property="goodsCreateTime" jdbcType="TIMESTAMP" />
+    <result column="goods_update_time" property="goodsUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="goods_delflag" property="goodsDelflag" jdbcType="TINYINT" />
+    <result column="goods_deltime" property="goodsDeltime" jdbcType="TIMESTAMP" />
+    <result column="goods_brief" property="goodsBrief" jdbcType="VARCHAR" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+    <result column="goods_status" property="goodsStatus" jdbcType="TINYINT" />
+    <result column="goods_added_time" property="goodsAddedTime" jdbcType="TIMESTAMP" />
+    <result column="goods_unadded_time" property="goodsUnaddedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    goods_id, goods_name, goods_img, goods_price, goods_num, goods_sort, goods_create_time, 
+    goods_update_time, goods_delflag, goods_deltime, goods_brief, type_id, brand_id, 
+    goods_status, goods_added_time, goods_unadded_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.company.project.model.GoodsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+    where goods_id = #{goodsId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from goods
+    where goods_id = #{goodsId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.company.project.model.GoodsExample" >
+    delete from goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.company.project.model.Goods" >
+    insert into goods (goods_id, goods_name, goods_img, 
+      goods_price, goods_num, goods_sort, 
+      goods_create_time, goods_update_time, goods_delflag, 
+      goods_deltime, goods_brief, type_id, 
+      brand_id, goods_status, goods_added_time, 
+      goods_unadded_time)
+    values (#{goodsId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsImg,jdbcType=VARCHAR}, 
+      #{goodsPrice,jdbcType=DECIMAL}, #{goodsNum,jdbcType=INTEGER}, #{goodsSort,jdbcType=INTEGER}, 
+      #{goodsCreateTime,jdbcType=TIMESTAMP}, #{goodsUpdateTime,jdbcType=TIMESTAMP}, #{goodsDelflag,jdbcType=TINYINT}, 
+      #{goodsDeltime,jdbcType=TIMESTAMP}, #{goodsBrief,jdbcType=VARCHAR}, #{typeId,jdbcType=INTEGER}, 
+      #{brandId,jdbcType=INTEGER}, #{goodsStatus,jdbcType=TINYINT}, #{goodsAddedTime,jdbcType=TIMESTAMP}, 
+      #{goodsUnaddedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.company.project.model.Goods" >
+    insert into goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsImg != null" >
+        goods_img,
+      </if>
+      <if test="goodsPrice != null" >
+        goods_price,
+      </if>
+      <if test="goodsNum != null" >
+        goods_num,
+      </if>
+      <if test="goodsSort != null" >
+        goods_sort,
+      </if>
+      <if test="goodsCreateTime != null" >
+        goods_create_time,
+      </if>
+      <if test="goodsUpdateTime != null" >
+        goods_update_time,
+      </if>
+      <if test="goodsDelflag != null" >
+        goods_delflag,
+      </if>
+      <if test="goodsDeltime != null" >
+        goods_deltime,
+      </if>
+      <if test="goodsBrief != null" >
+        goods_brief,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="brandId != null" >
+        brand_id,
+      </if>
+      <if test="goodsStatus != null" >
+        goods_status,
+      </if>
+      <if test="goodsAddedTime != null" >
+        goods_added_time,
+      </if>
+      <if test="goodsUnaddedTime != null" >
+        goods_unadded_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImg != null" >
+        #{goodsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null" >
+        #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsNum != null" >
+        #{goodsNum,jdbcType=INTEGER},
+      </if>
+      <if test="goodsSort != null" >
+        #{goodsSort,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCreateTime != null" >
+        #{goodsCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsUpdateTime != null" >
+        #{goodsUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsDelflag != null" >
+        #{goodsDelflag,jdbcType=TINYINT},
+      </if>
+      <if test="goodsDeltime != null" >
+        #{goodsDeltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsBrief != null" >
+        #{goodsBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="brandId != null" >
+        #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsStatus != null" >
+        #{goodsStatus,jdbcType=TINYINT},
+      </if>
+      <if test="goodsAddedTime != null" >
+        #{goodsAddedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsUnaddedTime != null" >
+        #{goodsUnaddedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.company.project.model.GoodsExample" resultType="java.lang.Integer" >
+    select count(*) from goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update goods
+    <set >
+      <if test="record.goodsId != null" >
+        goods_id = #{record.goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsName != null" >
+        goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsImg != null" >
+        goods_img = #{record.goodsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsPrice != null" >
+        goods_price = #{record.goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.goodsNum != null" >
+        goods_num = #{record.goodsNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsSort != null" >
+        goods_sort = #{record.goodsSort,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsCreateTime != null" >
+        goods_create_time = #{record.goodsCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.goodsUpdateTime != null" >
+        goods_update_time = #{record.goodsUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.goodsDelflag != null" >
+        goods_delflag = #{record.goodsDelflag,jdbcType=TINYINT},
+      </if>
+      <if test="record.goodsDeltime != null" >
+        goods_deltime = #{record.goodsDeltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.goodsBrief != null" >
+        goods_brief = #{record.goodsBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="record.typeId != null" >
+        type_id = #{record.typeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.brandId != null" >
+        brand_id = #{record.brandId,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsStatus != null" >
+        goods_status = #{record.goodsStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.goodsAddedTime != null" >
+        goods_added_time = #{record.goodsAddedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.goodsUnaddedTime != null" >
+        goods_unadded_time = #{record.goodsUnaddedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update goods
+    set goods_id = #{record.goodsId,jdbcType=VARCHAR},
+      goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      goods_img = #{record.goodsImg,jdbcType=VARCHAR},
+      goods_price = #{record.goodsPrice,jdbcType=DECIMAL},
+      goods_num = #{record.goodsNum,jdbcType=INTEGER},
+      goods_sort = #{record.goodsSort,jdbcType=INTEGER},
+      goods_create_time = #{record.goodsCreateTime,jdbcType=TIMESTAMP},
+      goods_update_time = #{record.goodsUpdateTime,jdbcType=TIMESTAMP},
+      goods_delflag = #{record.goodsDelflag,jdbcType=TINYINT},
+      goods_deltime = #{record.goodsDeltime,jdbcType=TIMESTAMP},
+      goods_brief = #{record.goodsBrief,jdbcType=VARCHAR},
+      type_id = #{record.typeId,jdbcType=INTEGER},
+      brand_id = #{record.brandId,jdbcType=INTEGER},
+      goods_status = #{record.goodsStatus,jdbcType=TINYINT},
+      goods_added_time = #{record.goodsAddedTime,jdbcType=TIMESTAMP},
+      goods_unadded_time = #{record.goodsUnaddedTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.project.model.Goods" >
+    update goods
+    <set >
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImg != null" >
+        goods_img = #{goodsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null" >
+        goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsNum != null" >
+        goods_num = #{goodsNum,jdbcType=INTEGER},
+      </if>
+      <if test="goodsSort != null" >
+        goods_sort = #{goodsSort,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCreateTime != null" >
+        goods_create_time = #{goodsCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsUpdateTime != null" >
+        goods_update_time = #{goodsUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsDelflag != null" >
+        goods_delflag = #{goodsDelflag,jdbcType=TINYINT},
+      </if>
+      <if test="goodsDeltime != null" >
+        goods_deltime = #{goodsDeltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsBrief != null" >
+        goods_brief = #{goodsBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="brandId != null" >
+        brand_id = #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsStatus != null" >
+        goods_status = #{goodsStatus,jdbcType=TINYINT},
+      </if>
+      <if test="goodsAddedTime != null" >
+        goods_added_time = #{goodsAddedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsUnaddedTime != null" >
+        goods_unadded_time = #{goodsUnaddedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where goods_id = #{goodsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.company.project.model.Goods" >
+    update goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_img = #{goodsImg,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      goods_num = #{goodsNum,jdbcType=INTEGER},
+      goods_sort = #{goodsSort,jdbcType=INTEGER},
+      goods_create_time = #{goodsCreateTime,jdbcType=TIMESTAMP},
+      goods_update_time = #{goodsUpdateTime,jdbcType=TIMESTAMP},
+      goods_delflag = #{goodsDelflag,jdbcType=TINYINT},
+      goods_deltime = #{goodsDeltime,jdbcType=TIMESTAMP},
+      goods_brief = #{goodsBrief,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=INTEGER},
+      brand_id = #{brandId,jdbcType=INTEGER},
+      goods_status = #{goodsStatus,jdbcType=TINYINT},
+      goods_added_time = #{goodsAddedTime,jdbcType=TIMESTAMP},
+      goods_unadded_time = #{goodsUnaddedTime,jdbcType=TIMESTAMP}
+    where goods_id = #{goodsId,jdbcType=VARCHAR}
+  </update>
+</mapper>
