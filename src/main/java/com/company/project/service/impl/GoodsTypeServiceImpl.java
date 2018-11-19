@@ -7,6 +7,7 @@ import com.company.project.model.GoodsType;
 import com.company.project.model.GoodsTypeExample;
 import com.company.project.service.GoodsTypeService;
 import com.company.project.service.impl.DTO.GoodsTypeListDTO;
+import com.company.project.utils.TimeUtil;
 import com.company.project.web.vm.GoodsTypeVm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -36,6 +37,7 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
         if (goodsTypes.size() == 0){
             GoodsType goodsType = new GoodsType();
             goodsType.setTypeId(UUID.randomUUID().toString());
+            goodsType.setTypeShowId(TimeUtil.getTimeString());
             goodsType.setTypeName(goodsTypeVm.getTypeName());
             goodsType.setTypeDesc(goodsTypeVm.getTypeDesc());
             goodsType.setTypeDelflag((byte) 1);

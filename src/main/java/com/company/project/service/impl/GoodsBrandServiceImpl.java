@@ -7,6 +7,7 @@ import com.company.project.model.GoodsBrand;
 import com.company.project.model.GoodsBrandExample;
 import com.company.project.service.GoodsBrandService;
 import com.company.project.service.impl.DTO.GoodsBrandListDTO;
+import com.company.project.utils.TimeUtil;
 import com.company.project.web.vm.GoodsBrandVm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -37,6 +38,7 @@ public class GoodsBrandServiceImpl implements GoodsBrandService {
             //没有同名品牌
             GoodsBrand goodsBrand = new GoodsBrand();
             goodsBrand.setBrandId(UUID.randomUUID().toString());
+            goodsBrand.setBrandShowId(TimeUtil.getTimeString());
             goodsBrand.setBrandName(goodsBrandVm.getBrandName());
             goodsBrand.setBrandDesc(goodsBrandVm.getBrandDesc());
             goodsBrand.setBrandStatus(goodsBrandVm.getBrandStatus());

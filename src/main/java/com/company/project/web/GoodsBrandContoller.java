@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -82,7 +83,12 @@ public class GoodsBrandContoller {
         logger.info("品牌分页查询接口  brandName={} pageNumber={},pageSize={}", brandName, pageNumber, pageSize);
 
         PageInfo<GoodsBrand> brandPage = goodsBrandService.findBrandPage(brandName, pageNumber, pageSize);
-        return ResultGenerator.genSuccessResult(brandPage.getList());
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("count", brandPage.getTotal());
+        map.put("data", brandPage.getList());
+        map.put("pageNumber", brandPage.getPageNum());
+        map.put("pageSize", brandPage.getPageSize());
+        return ResultGenerator.genSuccessResult(map);
     }
 
     /**

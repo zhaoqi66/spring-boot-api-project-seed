@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author FHZD.xiaoxun
@@ -71,7 +73,12 @@ public class GoodsTypeController {
                                 @RequestParam(name = "pageSize", required = true) int pageSize) {
         log.info("分类分页查询接口  typeName={} pageNumber={},pageSize={}", typeName, pageNumber, pageSize);
         PageInfo<GoodsType> typePage =goodsTypeService.findTypePage(typeName, pageNumber, pageSize);
-        return ResultGenerator.genSuccessResult(typePage.getList());
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("count", typePage.getTotal());
+        map.put("data", typePage.getList());
+        map.put("pageNumber", typePage.getPageNum());
+        map.put("pageSize", typePage.getPageSize());
+        return ResultGenerator.genSuccessResult(map);
     }
 
     /**
