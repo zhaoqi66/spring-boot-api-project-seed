@@ -8,12 +8,20 @@ import java.util.Date;
 
 @Table(name = "goods_brand")
 public class GoodsBrand {
+
+
     /**
      * 品牌ID
      */
     @Id
     @Column(name = "brand_id")
     private String brandId;
+
+    /**
+     * 品牌展示ID
+     */
+    @Column(name = "brand_show_id")
+    private String brandShowId;
 
     /**
      * 品牌名称
@@ -62,12 +70,21 @@ public class GoodsBrand {
      */
     @Column(name = "brand_del_time")
     private Date brandDelTime;
+
     public String getBrandId() {
         return brandId;
     }
 
     public void setBrandId(String brandId) {
         this.brandId = brandId == null ? null : brandId.trim();
+    }
+
+    public String getBrandShowId() {
+        return brandShowId;
+    }
+
+    public void setBrandShowId(String brandShowId) {
+        this.brandShowId = brandShowId == null ? null : brandShowId.trim();
     }
 
     public String getBrandName() {

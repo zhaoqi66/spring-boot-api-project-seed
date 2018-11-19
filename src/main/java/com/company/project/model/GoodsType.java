@@ -16,6 +16,12 @@ public class GoodsType {
     private String typeId;
 
     /**
+     * 分类展示ID
+     */
+    @Column(name = "type_show_id")
+    private String typeShowId;
+
+    /**
      * 分类名称
      */
     @Column(name = "type_name")
@@ -69,6 +75,14 @@ public class GoodsType {
 
     public void setTypeId(String typeId) {
         this.typeId = typeId == null ? null : typeId.trim();
+    }
+
+    public String getTypeShowId() {
+        return typeShowId;
+    }
+
+    public void setTypeShowId(String typeShowId) {
+        this.typeShowId = typeShowId == null ? null : typeShowId.trim();
     }
 
     public String getTypeName() {

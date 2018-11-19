@@ -17,6 +17,12 @@ public class Goods {
     private String goodsId;
 
     /**
+     * 商品展示ID
+     */
+    @Column(name = "goods_show_id")
+    private String goodsShowId;
+
+    /**
      * 商品名称
      */
     @Column(name = "goods_name")
@@ -80,13 +86,13 @@ public class Goods {
      * 分类ID
      */
     @Column(name = "type_id")
-    private Integer typeId;
+    private String typeId;
 
     /**
      * 品牌ID
      */
     @Column(name = "brand_id")
-    private Integer brandId;
+    private String brandId;
 
     /**
      * 上下架状态(0下架 1上架)
@@ -112,6 +118,14 @@ public class Goods {
 
     public void setGoodsId(String goodsId) {
         this.goodsId = goodsId == null ? null : goodsId.trim();
+    }
+
+    public String getGoodsShowId() {
+        return goodsShowId;
+    }
+
+    public void setGoodsShowId(String goodsShowId) {
+        this.goodsShowId = goodsShowId == null ? null : goodsShowId.trim();
     }
 
     public String getGoodsName() {
@@ -194,20 +208,20 @@ public class Goods {
         this.goodsBrief = goodsBrief == null ? null : goodsBrief.trim();
     }
 
-    public Integer getTypeId() {
+    public String getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
+    public void setTypeId(String typeId) {
+        this.typeId = typeId == null ? null : typeId.trim();
     }
 
-    public Integer getBrandId() {
+    public String getBrandId() {
         return brandId;
     }
 
-    public void setBrandId(Integer brandId) {
-        this.brandId = brandId;
+    public void setBrandId(String brandId) {
+        this.brandId = brandId == null ? null : brandId.trim();
     }
 
     public Byte getGoodsStatus() {

@@ -175,6 +175,76 @@ public class GoodsTypeExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeShowIdIsNull() {
+            addCriterion("type_show_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdIsNotNull() {
+            addCriterion("type_show_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdEqualTo(String value) {
+            addCriterion("type_show_id =", value, "typeShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdNotEqualTo(String value) {
+            addCriterion("type_show_id <>", value, "typeShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdGreaterThan(String value) {
+            addCriterion("type_show_id >", value, "typeShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdGreaterThanOrEqualTo(String value) {
+            addCriterion("type_show_id >=", value, "typeShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdLessThan(String value) {
+            addCriterion("type_show_id <", value, "typeShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdLessThanOrEqualTo(String value) {
+            addCriterion("type_show_id <=", value, "typeShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdLike(String value) {
+            addCriterion("type_show_id like", value, "typeShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdNotLike(String value) {
+            addCriterion("type_show_id not like", value, "typeShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdIn(List<String> values) {
+            addCriterion("type_show_id in", values, "typeShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdNotIn(List<String> values) {
+            addCriterion("type_show_id not in", values, "typeShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdBetween(String value1, String value2) {
+            addCriterion("type_show_id between", value1, value2, "typeShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeShowIdNotBetween(String value1, String value2) {
+            addCriterion("type_show_id not between", value1, value2, "typeShowId");
+            return (Criteria) this;
+        }
+
         public Criteria andTypeNameIsNull() {
             addCriterion("type_name is null");
             return (Criteria) this;

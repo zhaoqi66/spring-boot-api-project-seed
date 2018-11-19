@@ -3,6 +3,7 @@
 <mapper namespace="com.company.project.dao.GoodsMapper" >
   <resultMap id="BaseResultMap" type="com.company.project.model.Goods" >
     <id column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="goods_show_id" property="goodsShowId" jdbcType="VARCHAR" />
     <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
     <result column="goods_img" property="goodsImg" jdbcType="VARCHAR" />
     <result column="goods_price" property="goodsPrice" jdbcType="DECIMAL" />
@@ -13,8 +14,8 @@
     <result column="goods_delflag" property="goodsDelflag" jdbcType="TINYINT" />
     <result column="goods_deltime" property="goodsDeltime" jdbcType="TIMESTAMP" />
     <result column="goods_brief" property="goodsBrief" jdbcType="VARCHAR" />
-    <result column="type_id" property="typeId" jdbcType="INTEGER" />
-    <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+    <result column="type_id" property="typeId" jdbcType="VARCHAR" />
+    <result column="brand_id" property="brandId" jdbcType="VARCHAR" />
     <result column="goods_status" property="goodsStatus" jdbcType="TINYINT" />
     <result column="goods_added_time" property="goodsAddedTime" jdbcType="TIMESTAMP" />
     <result column="goods_unadded_time" property="goodsUnaddedTime" jdbcType="TIMESTAMP" />
@@ -78,9 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    goods_id, goods_name, goods_img, goods_price, goods_num, goods_sort, goods_create_time, 
-    goods_update_time, goods_delflag, goods_deltime, goods_brief, type_id, brand_id, 
-    goods_status, goods_added_time, goods_unadded_time
+    goods_id, goods_show_id, goods_name, goods_img, goods_price, goods_num, goods_sort, 
+    goods_create_time, goods_update_time, goods_delflag, goods_deltime, goods_brief, 
+    type_id, brand_id, goods_status, goods_added_time, goods_unadded_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.company.project.model.GoodsExample" >
     select
@@ -113,24 +114,27 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.company.project.model.Goods" >
-    insert into goods (goods_id, goods_name, goods_img, 
-      goods_price, goods_num, goods_sort, 
-      goods_create_time, goods_update_time, goods_delflag, 
-      goods_deltime, goods_brief, type_id, 
-      brand_id, goods_status, goods_added_time, 
-      goods_unadded_time)
-    values (#{goodsId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsImg,jdbcType=VARCHAR}, 
-      #{goodsPrice,jdbcType=DECIMAL}, #{goodsNum,jdbcType=INTEGER}, #{goodsSort,jdbcType=INTEGER}, 
-      #{goodsCreateTime,jdbcType=TIMESTAMP}, #{goodsUpdateTime,jdbcType=TIMESTAMP}, #{goodsDelflag,jdbcType=TINYINT}, 
-      #{goodsDeltime,jdbcType=TIMESTAMP}, #{goodsBrief,jdbcType=VARCHAR}, #{typeId,jdbcType=INTEGER}, 
-      #{brandId,jdbcType=INTEGER}, #{goodsStatus,jdbcType=TINYINT}, #{goodsAddedTime,jdbcType=TIMESTAMP}, 
-      #{goodsUnaddedTime,jdbcType=TIMESTAMP})
+    insert into goods (goods_id, goods_show_id, goods_name, 
+      goods_img, goods_price, goods_num, 
+      goods_sort, goods_create_time, goods_update_time, 
+      goods_delflag, goods_deltime, goods_brief, 
+      type_id, brand_id, goods_status, 
+      goods_added_time, goods_unadded_time)
+    values (#{goodsId,jdbcType=VARCHAR}, #{goodsShowId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
+      #{goodsImg,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL}, #{goodsNum,jdbcType=INTEGER}, 
+      #{goodsSort,jdbcType=INTEGER}, #{goodsCreateTime,jdbcType=TIMESTAMP}, #{goodsUpdateTime,jdbcType=TIMESTAMP}, 
+      #{goodsDelflag,jdbcType=TINYINT}, #{goodsDeltime,jdbcType=TIMESTAMP}, #{goodsBrief,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=VARCHAR}, #{brandId,jdbcType=VARCHAR}, #{goodsStatus,jdbcType=TINYINT}, 
+      #{goodsAddedTime,jdbcType=TIMESTAMP}, #{goodsUnaddedTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.company.project.model.Goods" >
     insert into goods
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="goodsId != null" >
         goods_id,
+      </if>
+      <if test="goodsShowId != null" >
+        goods_show_id,
       </if>
       <if test="goodsName != null" >
         goods_name,
@@ -182,6 +186,9 @@
       <if test="goodsId != null" >
         #{goodsId,jdbcType=VARCHAR},
       </if>
+      <if test="goodsShowId != null" >
+        #{goodsShowId,jdbcType=VARCHAR},
+      </if>
       <if test="goodsName != null" >
         #{goodsName,jdbcType=VARCHAR},
       </if>
@@ -213,10 +220,10 @@
         #{goodsBrief,jdbcType=VARCHAR},
       </if>
       <if test="typeId != null" >
-        #{typeId,jdbcType=INTEGER},
+        #{typeId,jdbcType=VARCHAR},
       </if>
       <if test="brandId != null" >
-        #{brandId,jdbcType=INTEGER},
+        #{brandId,jdbcType=VARCHAR},
       </if>
       <if test="goodsStatus != null" >
         #{goodsStatus,jdbcType=TINYINT},
@@ -240,6 +247,9 @@
     <set >
       <if test="record.goodsId != null" >
         goods_id = #{record.goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsShowId != null" >
+        goods_show_id = #{record.goodsShowId,jdbcType=VARCHAR},
       </if>
       <if test="record.goodsName != null" >
         goods_name = #{record.goodsName,jdbcType=VARCHAR},
@@ -272,10 +282,10 @@
         goods_brief = #{record.goodsBrief,jdbcType=VARCHAR},
       </if>
       <if test="record.typeId != null" >
-        type_id = #{record.typeId,jdbcType=INTEGER},
+        type_id = #{record.typeId,jdbcType=VARCHAR},
       </if>
       <if test="record.brandId != null" >
-        brand_id = #{record.brandId,jdbcType=INTEGER},
+        brand_id = #{record.brandId,jdbcType=VARCHAR},
       </if>
       <if test="record.goodsStatus != null" >
         goods_status = #{record.goodsStatus,jdbcType=TINYINT},
@@ -294,6 +304,7 @@
   <update id="updateByExample" parameterType="map" >
     update goods
     set goods_id = #{record.goodsId,jdbcType=VARCHAR},
+      goods_show_id = #{record.goodsShowId,jdbcType=VARCHAR},
       goods_name = #{record.goodsName,jdbcType=VARCHAR},
       goods_img = #{record.goodsImg,jdbcType=VARCHAR},
       goods_price = #{record.goodsPrice,jdbcType=DECIMAL},
@@ -304,8 +315,8 @@
       goods_delflag = #{record.goodsDelflag,jdbcType=TINYINT},
       goods_deltime = #{record.goodsDeltime,jdbcType=TIMESTAMP},
       goods_brief = #{record.goodsBrief,jdbcType=VARCHAR},
-      type_id = #{record.typeId,jdbcType=INTEGER},
-      brand_id = #{record.brandId,jdbcType=INTEGER},
+      type_id = #{record.typeId,jdbcType=VARCHAR},
+      brand_id = #{record.brandId,jdbcType=VARCHAR},
       goods_status = #{record.goodsStatus,jdbcType=TINYINT},
       goods_added_time = #{record.goodsAddedTime,jdbcType=TIMESTAMP},
       goods_unadded_time = #{record.goodsUnaddedTime,jdbcType=TIMESTAMP}
@@ -316,6 +327,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.company.project.model.Goods" >
     update goods
     <set >
+      <if test="goodsShowId != null" >
+        goods_show_id = #{goodsShowId,jdbcType=VARCHAR},
+      </if>
       <if test="goodsName != null" >
         goods_name = #{goodsName,jdbcType=VARCHAR},
       </if>
@@ -347,10 +361,10 @@
         goods_brief = #{goodsBrief,jdbcType=VARCHAR},
       </if>
       <if test="typeId != null" >
-        type_id = #{typeId,jdbcType=INTEGER},
+        type_id = #{typeId,jdbcType=VARCHAR},
       </if>
       <if test="brandId != null" >
-        brand_id = #{brandId,jdbcType=INTEGER},
+        brand_id = #{brandId,jdbcType=VARCHAR},
       </if>
       <if test="goodsStatus != null" >
         goods_status = #{goodsStatus,jdbcType=TINYINT},
@@ -366,7 +380,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.company.project.model.Goods" >
     update goods
-    set goods_name = #{goodsName,jdbcType=VARCHAR},
+    set goods_show_id = #{goodsShowId,jdbcType=VARCHAR},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
       goods_img = #{goodsImg,jdbcType=VARCHAR},
       goods_price = #{goodsPrice,jdbcType=DECIMAL},
       goods_num = #{goodsNum,jdbcType=INTEGER},
@@ -376,8 +391,8 @@
       goods_delflag = #{goodsDelflag,jdbcType=TINYINT},
       goods_deltime = #{goodsDeltime,jdbcType=TIMESTAMP},
       goods_brief = #{goodsBrief,jdbcType=VARCHAR},
-      type_id = #{typeId,jdbcType=INTEGER},
-      brand_id = #{brandId,jdbcType=INTEGER},
+      type_id = #{typeId,jdbcType=VARCHAR},
+      brand_id = #{brandId,jdbcType=VARCHAR},
       goods_status = #{goodsStatus,jdbcType=TINYINT},
       goods_added_time = #{goodsAddedTime,jdbcType=TIMESTAMP},
       goods_unadded_time = #{goodsUnaddedTime,jdbcType=TIMESTAMP}

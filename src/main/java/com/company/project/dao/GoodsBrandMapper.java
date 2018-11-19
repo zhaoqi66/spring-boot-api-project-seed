@@ -28,6 +28,4 @@ public interface GoodsBrandMapper {
     int updateByPrimaryKeySelective(GoodsBrand record);
 
     int updateByPrimaryKey(GoodsBrand record);
-
-
 }

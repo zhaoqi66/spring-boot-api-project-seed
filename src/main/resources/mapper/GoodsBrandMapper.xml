@@ -3,6 +3,7 @@
 <mapper namespace="com.company.project.dao.GoodsBrandMapper" >
   <resultMap id="BaseResultMap" type="com.company.project.model.GoodsBrand" >
     <id column="brand_id" property="brandId" jdbcType="VARCHAR" />
+    <result column="brand_show_id" property="brandShowId" jdbcType="VARCHAR" />
     <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
     <result column="brand_sort" property="brandSort" jdbcType="INTEGER" />
     <result column="brand_desc" property="brandDesc" jdbcType="VARCHAR" />
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    brand_id, brand_name, brand_sort, brand_desc, brand_status, brand_create_time, brand_modified_time, 
-    brand_delflag, brand_del_time
+    brand_id, brand_show_id, brand_name, brand_sort, brand_desc, brand_status, brand_create_time, 
+    brand_modified_time, brand_delflag, brand_del_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.company.project.model.GoodsBrandExample" >
     select
@@ -105,20 +106,23 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.company.project.model.GoodsBrand" >
-    insert into goods_brand (brand_id, brand_name, brand_sort, 
-      brand_desc, brand_status, brand_create_time, 
-      brand_modified_time, brand_delflag, brand_del_time
-      )
-    values (#{brandId,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, #{brandSort,jdbcType=INTEGER}, 
-      #{brandDesc,jdbcType=VARCHAR}, #{brandStatus,jdbcType=TINYINT}, #{brandCreateTime,jdbcType=TIMESTAMP}, 
-      #{brandModifiedTime,jdbcType=TIMESTAMP}, #{brandDelflag,jdbcType=TINYINT}, #{brandDelTime,jdbcType=TIMESTAMP}
-      )
+    insert into goods_brand (brand_id, brand_show_id, brand_name, 
+      brand_sort, brand_desc, brand_status, 
+      brand_create_time, brand_modified_time, 
+      brand_delflag, brand_del_time)
+    values (#{brandId,jdbcType=VARCHAR}, #{brandShowId,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, 
+      #{brandSort,jdbcType=INTEGER}, #{brandDesc,jdbcType=VARCHAR}, #{brandStatus,jdbcType=TINYINT}, 
+      #{brandCreateTime,jdbcType=TIMESTAMP}, #{brandModifiedTime,jdbcType=TIMESTAMP}, 
+      #{brandDelflag,jdbcType=TINYINT}, #{brandDelTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.company.project.model.GoodsBrand" >
     insert into goods_brand
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="brandId != null" >
         brand_id,
+      </if>
+      <if test="brandShowId != null" >
+        brand_show_id,
       </if>
       <if test="brandName != null" >
         brand_name,
@@ -148,6 +152,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="brandId != null" >
         #{brandId,jdbcType=VARCHAR},
+      </if>
+      <if test="brandShowId != null" >
+        #{brandShowId,jdbcType=VARCHAR},
       </if>
       <if test="brandName != null" >
         #{brandName,jdbcType=VARCHAR},
@@ -187,6 +194,9 @@
       <if test="record.brandId != null" >
         brand_id = #{record.brandId,jdbcType=VARCHAR},
       </if>
+      <if test="record.brandShowId != null" >
+        brand_show_id = #{record.brandShowId,jdbcType=VARCHAR},
+      </if>
       <if test="record.brandName != null" >
         brand_name = #{record.brandName,jdbcType=VARCHAR},
       </if>
@@ -219,6 +229,7 @@
   <update id="updateByExample" parameterType="map" >
     update goods_brand
     set brand_id = #{record.brandId,jdbcType=VARCHAR},
+      brand_show_id = #{record.brandShowId,jdbcType=VARCHAR},
       brand_name = #{record.brandName,jdbcType=VARCHAR},
       brand_sort = #{record.brandSort,jdbcType=INTEGER},
       brand_desc = #{record.brandDesc,jdbcType=VARCHAR},
@@ -234,6 +245,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.company.project.model.GoodsBrand" >
     update goods_brand
     <set >
+      <if test="brandShowId != null" >
+        brand_show_id = #{brandShowId,jdbcType=VARCHAR},
+      </if>
       <if test="brandName != null" >
         brand_name = #{brandName,jdbcType=VARCHAR},
       </if>
@@ -263,7 +277,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.company.project.model.GoodsBrand" >
     update goods_brand
-    set brand_name = #{brandName,jdbcType=VARCHAR},
+    set brand_show_id = #{brandShowId,jdbcType=VARCHAR},
+      brand_name = #{brandName,jdbcType=VARCHAR},
       brand_sort = #{brandSort,jdbcType=INTEGER},
       brand_desc = #{brandDesc,jdbcType=VARCHAR},
       brand_status = #{brandStatus,jdbcType=TINYINT},

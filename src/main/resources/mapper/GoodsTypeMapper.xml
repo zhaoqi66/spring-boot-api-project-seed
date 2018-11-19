@@ -3,6 +3,7 @@
 <mapper namespace="com.company.project.dao.GoodsTypeMapper" >
   <resultMap id="BaseResultMap" type="com.company.project.model.GoodsType" >
     <id column="type_id" property="typeId" jdbcType="VARCHAR" />
+    <result column="type_show_id" property="typeShowId" jdbcType="VARCHAR" />
     <result column="type_name" property="typeName" jdbcType="VARCHAR" />
     <result column="type_desc" property="typeDesc" jdbcType="VARCHAR" />
     <result column="type_status" property="typeStatus" jdbcType="TINYINT" />
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    type_id, type_name, type_desc, type_status, type_sort, type_create_time, type_update_time, 
-    type_delflag, type_del_time
+    type_id, type_show_id, type_name, type_desc, type_status, type_sort, type_create_time, 
+    type_update_time, type_delflag, type_del_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.company.project.model.GoodsTypeExample" >
     select
@@ -105,20 +106,23 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.company.project.model.GoodsType" >
-    insert into goods_type (type_id, type_name, type_desc, 
-      type_status, type_sort, type_create_time, 
-      type_update_time, type_delflag, type_del_time
-      )
-    values (#{typeId,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{typeDesc,jdbcType=VARCHAR}, 
-      #{typeStatus,jdbcType=TINYINT}, #{typeSort,jdbcType=INTEGER}, #{typeCreateTime,jdbcType=TIMESTAMP}, 
-      #{typeUpdateTime,jdbcType=TIMESTAMP}, #{typeDelflag,jdbcType=TINYINT}, #{typeDelTime,jdbcType=TIMESTAMP}
-      )
+    insert into goods_type (type_id, type_show_id, type_name, 
+      type_desc, type_status, type_sort, 
+      type_create_time, type_update_time, type_delflag, 
+      type_del_time)
+    values (#{typeId,jdbcType=VARCHAR}, #{typeShowId,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, 
+      #{typeDesc,jdbcType=VARCHAR}, #{typeStatus,jdbcType=TINYINT}, #{typeSort,jdbcType=INTEGER}, 
+      #{typeCreateTime,jdbcType=TIMESTAMP}, #{typeUpdateTime,jdbcType=TIMESTAMP}, #{typeDelflag,jdbcType=TINYINT}, 
+      #{typeDelTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.company.project.model.GoodsType" >
     insert into goods_type
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="typeId != null" >
         type_id,
+      </if>
+      <if test="typeShowId != null" >
+        type_show_id,
       </if>
       <if test="typeName != null" >
         type_name,
@@ -148,6 +152,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="typeId != null" >
         #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeShowId != null" >
+        #{typeShowId,jdbcType=VARCHAR},
       </if>
       <if test="typeName != null" >
         #{typeName,jdbcType=VARCHAR},
@@ -187,6 +194,9 @@
       <if test="record.typeId != null" >
         type_id = #{record.typeId,jdbcType=VARCHAR},
       </if>
+      <if test="record.typeShowId != null" >
+        type_show_id = #{record.typeShowId,jdbcType=VARCHAR},
+      </if>
       <if test="record.typeName != null" >
         type_name = #{record.typeName,jdbcType=VARCHAR},
       </if>
@@ -219,6 +229,7 @@
   <update id="updateByExample" parameterType="map" >
     update goods_type
     set type_id = #{record.typeId,jdbcType=VARCHAR},
+      type_show_id = #{record.typeShowId,jdbcType=VARCHAR},
       type_name = #{record.typeName,jdbcType=VARCHAR},
       type_desc = #{record.typeDesc,jdbcType=VARCHAR},
       type_status = #{record.typeStatus,jdbcType=TINYINT},
@@ -234,6 +245,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.company.project.model.GoodsType" >
     update goods_type
     <set >
+      <if test="typeShowId != null" >
+        type_show_id = #{typeShowId,jdbcType=VARCHAR},
+      </if>
       <if test="typeName != null" >
         type_name = #{typeName,jdbcType=VARCHAR},
       </if>
@@ -263,7 +277,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.company.project.model.GoodsType" >
     update goods_type
-    set type_name = #{typeName,jdbcType=VARCHAR},
+    set type_show_id = #{typeShowId,jdbcType=VARCHAR},
+      type_name = #{typeName,jdbcType=VARCHAR},
       type_desc = #{typeDesc,jdbcType=VARCHAR},
       type_status = #{typeStatus,jdbcType=TINYINT},
       type_sort = #{typeSort,jdbcType=INTEGER},

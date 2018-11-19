@@ -175,6 +175,76 @@ public class GoodsBrandExample {
             return (Criteria) this;
         }
 
+        public Criteria andBrandShowIdIsNull() {
+            addCriterion("brand_show_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdIsNotNull() {
+            addCriterion("brand_show_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdEqualTo(String value) {
+            addCriterion("brand_show_id =", value, "brandShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdNotEqualTo(String value) {
+            addCriterion("brand_show_id <>", value, "brandShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdGreaterThan(String value) {
+            addCriterion("brand_show_id >", value, "brandShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdGreaterThanOrEqualTo(String value) {
+            addCriterion("brand_show_id >=", value, "brandShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdLessThan(String value) {
+            addCriterion("brand_show_id <", value, "brandShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdLessThanOrEqualTo(String value) {
+            addCriterion("brand_show_id <=", value, "brandShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdLike(String value) {
+            addCriterion("brand_show_id like", value, "brandShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdNotLike(String value) {
+            addCriterion("brand_show_id not like", value, "brandShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdIn(List<String> values) {
+            addCriterion("brand_show_id in", values, "brandShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdNotIn(List<String> values) {
+            addCriterion("brand_show_id not in", values, "brandShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdBetween(String value1, String value2) {
+            addCriterion("brand_show_id between", value1, value2, "brandShowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandShowIdNotBetween(String value1, String value2) {
+            addCriterion("brand_show_id not between", value1, value2, "brandShowId");
+            return (Criteria) this;
+        }
+
         public Criteria andBrandNameIsNull() {
             addCriterion("brand_name is null");
             return (Criteria) this;
