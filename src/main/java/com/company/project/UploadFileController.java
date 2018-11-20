@@ -1,4 +1,4 @@
-package com.company.project.web;
+package com.company.project;
 
 
 import com.company.project.core.JsonResult;

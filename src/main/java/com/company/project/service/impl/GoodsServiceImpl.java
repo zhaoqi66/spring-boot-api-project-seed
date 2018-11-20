@@ -2,9 +2,13 @@ package com.company.project.service.impl;
 
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
+import com.company.project.dao.GoodsBrandMapper;
 import com.company.project.dao.GoodsMapper;
+import com.company.project.dao.GoodsTypeMapper;
 import com.company.project.model.Goods;
+import com.company.project.model.GoodsBrand;
 import com.company.project.model.GoodsExample;
+import com.company.project.model.GoodsType;
 import com.company.project.service.GoodsService;
 import com.company.project.service.impl.DTO.GoodsDTO;
 import com.company.project.utils.TimeUtil;
@@ -27,6 +31,10 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
     private GoodsMapper goodsMapper;
+    @Autowired
+    private GoodsTypeMapper goodsTypeMapper;
+    @Autowired
+    private GoodsBrandMapper goodsBrandMapper;
 
     @Override
     public Result addProduct(GoodsVm goodsVm) {
@@ -133,8 +141,10 @@ public class GoodsServiceImpl implements GoodsService {
         ArrayList<GoodsDTO> list = new ArrayList<>();
         if (goods.size() != 0){
             for (Goods g: goods) {
+                GoodsBrand goodsBrand = goodsBrandMapper.selectByPrimaryKey(g.getBrandId());
+                GoodsType goodsType = goodsTypeMapper.selectByPrimaryKey(g.getTypeId());
                 String[] imgSplit = g.getGoodsImg().split(",");
-                GoodsDTO goodsDTO = new GoodsDTO(g,imgSplit);
+                GoodsDTO goodsDTO = new GoodsDTO(g,imgSplit,goodsType.getTypeName(),goodsBrand.getBrandName());
                 list.add(goodsDTO);
             }
         }

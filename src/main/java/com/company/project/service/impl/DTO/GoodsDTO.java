@@ -79,9 +79,19 @@ public class GoodsDTO {
     private String typeId;
 
     /**
+     * 分类名称
+     */
+    private String typeName;
+
+    /**
      * 品牌ID
      */
     private String brandId;
+
+    /**
+     * 品牌名称
+     */
+    private String brandName;
 
     /**
      * 上下架状态(0下架 1上架)
@@ -98,7 +108,7 @@ public class GoodsDTO {
      */
     private Date goodsUnaddedTime;
 
-    public GoodsDTO(Goods goods,String[] imgUrl){
+    public GoodsDTO(Goods goods,String[] imgUrl,String typeName,String brandName){
         this.goodsId = goods.getGoodsId();
         this.goodsShowId = goods.getGoodsShowId();
         this.goodsName = goods.getGoodsName();
@@ -112,7 +122,9 @@ public class GoodsDTO {
         this.goodsDeltime = goods.getGoodsDeltime();
         this.goodsBrief = goods.getGoodsBrief();
         this.typeId = goods.getTypeId();
+        this.typeName=typeName;
         this.brandId = goods.getBrandId();
+        this.brandName=brandName;
         this.goodsStatus = goods.getGoodsStatus();
         this.goodsAddedTime = goods.getGoodsAddedTime();
         this.goodsUnaddedTime = goods.getGoodsUnaddedTime();
