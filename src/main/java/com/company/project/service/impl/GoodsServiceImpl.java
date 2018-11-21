@@ -1,7 +1,6 @@
 package com.company.project.service.impl;
 
-import com.company.project.core.Result;
-import com.company.project.core.ResultGenerator;
+import com.company.project.core.ServiceException;
 import com.company.project.dao.GoodsBrandMapper;
 import com.company.project.dao.GoodsMapper;
 import com.company.project.dao.GoodsTypeMapper;
@@ -37,18 +36,18 @@ public class GoodsServiceImpl implements GoodsService {
     private GoodsBrandMapper goodsBrandMapper;
 
     @Override
-    public Result addProduct(GoodsVm goodsVm) {
+    public void addProduct(GoodsVm goodsVm) {
         if (goodsVm.getGoodsName() == null) {
-            return ResultGenerator.genFailResult("商品名称不能为空!!!");
+            throw new ServiceException("商品名称不能为空!!!");
         }
         if (goodsVm.getGoodsPrice() == null) {
-            return ResultGenerator.genFailResult("商品价格不能为空!!!");
+            throw new ServiceException("商品价格不能为空!!!");
         }
         if (goodsVm.getGoodsBrief() == null) {
-            return ResultGenerator.genFailResult("商品介绍不能为空!!!");
+            throw new ServiceException("商品介绍不能为空!!!");
         }
         if (goodsVm.getGoodsImg() == null) {
-            return ResultGenerator.genFailResult("商品图片不能为空!!!");
+            throw new ServiceException("商品图片不能为空!!!");
         }
         //图片转换
         String s = obtainString(goodsVm.getGoodsImg());
@@ -70,22 +69,21 @@ public class GoodsServiceImpl implements GoodsService {
             goods.setGoodsAddedTime(new Date());
         }
         goodsMapper.insert(goods);
-        return ResultGenerator.genSuccessResult();
     }
 
     @Override
-    public Result updateProduct(GoodsVm goodsVm) {
+    public void updateProduct(GoodsVm goodsVm) {
         if (goodsVm.getGoodsName() == null) {
-            return ResultGenerator.genFailResult("商品名称不能为空!!!");
+            throw new ServiceException("商品名称不能为空!!!");
         }
         if (goodsVm.getGoodsPrice() == null) {
-            return ResultGenerator.genFailResult("商品价格不能为空!!!");
+            throw new ServiceException("商品价格不能为空!!!");
         }
         if (goodsVm.getGoodsBrief() == null) {
-            return ResultGenerator.genFailResult("商品介绍不能为空!!!");
+            throw new ServiceException("商品介绍不能为空!!!");
         }
         if (goodsVm.getGoodsImg() == null) {
-            return ResultGenerator.genFailResult("商品图片不能为空!!!");
+            throw new ServiceException("商品图片不能为空!!!");
         }
 
         Goods goods = goodsMapper.selectByPrimaryKey(goodsVm.getGoodsId());
@@ -103,23 +101,21 @@ public class GoodsServiceImpl implements GoodsService {
             goods.setGoodsUpdateTime(new Date());
 
             goodsMapper.updateByPrimaryKey(goods);
-            return ResultGenerator.genSuccessResult();
         } else {
-            return ResultGenerator.genFailResult("无效ID!!!");
+            throw new ServiceException("无效ID!!!");
         }
     }
 
     @Override
-    public Result deleteProduct(String goodsId) {
+    public void deleteProduct(String goodsId) {
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
         if (goods != null && goods.getGoodsDelflag() != 0) {
             goods.setGoodsDelflag((byte) 0);
             goods.setGoodsDeltime(new Date());
 
             goodsMapper.updateByPrimaryKeySelective(goods);
-            return ResultGenerator.genSuccessResult();
         }else {
-            return ResultGenerator.genFailResult("无效ID!!!");
+            throw new ServiceException("无效ID!!!");
         }
     }
 

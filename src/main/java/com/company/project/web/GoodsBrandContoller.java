@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,7 +40,8 @@ public class GoodsBrandContoller {
     @PostMapping("/add")
     public Result addBrand(@RequestBody GoodsBrandVm goodsBrandVm) {
         logger.info("添加品牌接口goodsBrandVm={}", goodsBrandVm.toString());
-        return goodsBrandService.addBrand(goodsBrandVm);
+        goodsBrandService.addBrand(goodsBrandVm);
+        return ResultGenerator.genSuccessResult();
     }
 
     /**
@@ -53,7 +53,8 @@ public class GoodsBrandContoller {
     @PutMapping("/update")
     public Result updateBrand(@RequestBody GoodsBrandVm goodsBrandVm) {
         logger.info("品牌修改接口 GoodsBrandVm={}", goodsBrandVm);
-        return goodsBrandService.updateBrand(goodsBrandVm);
+        goodsBrandService.updateBrand(goodsBrandVm);
+        return ResultGenerator.genSuccessResult();
     }
 
     /**
@@ -65,7 +66,8 @@ public class GoodsBrandContoller {
     @DeleteMapping("/delete")
     public Result deleteBrand(@RequestParam(name = "brandId", required = true) String brandId) {
         logger.info("品牌删除接口 brandId={}", brandId);
-        return goodsBrandService.deleteBrand(brandId);
+        goodsBrandService.deleteBrand(brandId);
+        return ResultGenerator.genSuccessResult();
     }
 
     /**

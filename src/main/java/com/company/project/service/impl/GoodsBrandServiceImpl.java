@@ -1,7 +1,6 @@
 package com.company.project.service.impl;
 
-import com.company.project.core.Result;
-import com.company.project.core.ResultGenerator;
+import com.company.project.core.ServiceException;
 import com.company.project.dao.GoodsBrandMapper;
 import com.company.project.model.GoodsBrand;
 import com.company.project.model.GoodsBrandExample;
@@ -32,7 +31,7 @@ public class GoodsBrandServiceImpl implements GoodsBrandService {
     private GoodsBrandMapper goodsBrandMapper;
 
     @Override
-    public Result addBrand(GoodsBrandVm goodsBrandVm) {
+    public void addBrand(GoodsBrandVm goodsBrandVm) {
         List<GoodsBrand> goodsBrands = getGoodsBrands(goodsBrandVm);
         if (goodsBrands.size() == 0) {
             //没有同名品牌
@@ -46,9 +45,8 @@ public class GoodsBrandServiceImpl implements GoodsBrandService {
             goodsBrand.setBrandDelflag((byte) 1);
 
             goodsBrandMapper.insert(goodsBrand);
-            return ResultGenerator.genSuccessResult();
         } else {
-            return ResultGenerator.genFailResult("品牌名称重复，请修改后再添加");
+            throw new ServiceException("品牌名称重复，请修改后再添加!!!");
         }
 
     }
@@ -61,7 +59,7 @@ public class GoodsBrandServiceImpl implements GoodsBrandService {
     }
 
     @Override
-    public Result updateBrand(GoodsBrandVm goodsBrandVm) {
+    public void updateBrand(GoodsBrandVm goodsBrandVm) {
         GoodsBrand goodsBrand = goodsBrandMapper.selectByPrimaryKey(goodsBrandVm.getBrandId());
         List<GoodsBrand> goodsBrands = getGoodsBrands(goodsBrandVm);
         if (goodsBrand != null ) {
@@ -72,27 +70,24 @@ public class GoodsBrandServiceImpl implements GoodsBrandService {
                 goodsBrand.setBrandModifiedTime(new Date());
 
                 goodsBrandMapper.updateByPrimaryKeySelective(goodsBrand);
-
-                return ResultGenerator.genSuccessResult();
             } else {
-                return ResultGenerator.genFailResult("品牌名称重复,请修改!!!");
+                throw new ServiceException("品牌名称重复,请修改!!!");
             }
         } else {
-            return ResultGenerator.genFailResult("无效的品牌id");
+            throw new ServiceException("无效的品牌id!!!");
         }
     }
 
     @Override
-    public Result deleteBrand(String brandId) {
+    public void deleteBrand(String brandId) {
         GoodsBrand goodsBrand = goodsBrandMapper.selectByPrimaryKey(brandId);
 
         if (goodsBrand != null && goodsBrand.getBrandDelflag()!=0){
             goodsBrand.setBrandDelflag((byte) 0);
             goodsBrand.setBrandDelTime(new Date());
             goodsBrandMapper.updateByPrimaryKeySelective(goodsBrand);
-            return ResultGenerator.genSuccessResult();
         }else {
-            return ResultGenerator.genFailResult("无效ID");
+            throw new ServiceException("无效ID!!!");
         }
     }
 

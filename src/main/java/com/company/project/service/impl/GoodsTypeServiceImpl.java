@@ -1,7 +1,6 @@
 package com.company.project.service.impl;
 
-import com.company.project.core.Result;
-import com.company.project.core.ResultGenerator;
+import com.company.project.core.ServiceException;
 import com.company.project.dao.GoodsTypeMapper;
 import com.company.project.model.GoodsType;
 import com.company.project.model.GoodsTypeExample;
@@ -32,7 +31,7 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
     private GoodsTypeMapper goodsTypeMapper;
 
     @Override
-    public Result addType(GoodsTypeVm goodsTypeVm) {
+    public void addType(GoodsTypeVm goodsTypeVm) {
         List<GoodsType> goodsTypes = getGoodsTypes(goodsTypeVm);
         if (goodsTypes.size() == 0){
             GoodsType goodsType = new GoodsType();
@@ -44,14 +43,13 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
             goodsType.setTypeStatus((byte) 1);
             goodsType.setTypeCreateTime(new Date());
             goodsTypeMapper.insert(goodsType);
-            return ResultGenerator.genSuccessResult();
         }else {
-            return ResultGenerator.genFailResult("分类名称重复,请修改后添加!!!");
+            throw new ServiceException("分类名称重复,请修改后添加!!!");
         }
     }
 
     @Override
-    public Result updateType(GoodsTypeVm goodsTypeVm) {
+    public void updateType(GoodsTypeVm goodsTypeVm) {
         GoodsType goodsType = goodsTypeMapper.selectByPrimaryKey(goodsTypeVm.getTypeId());
         List<GoodsType> goodsTypes = getGoodsTypes(goodsTypeVm);
         if (goodsType != null ) {
@@ -62,26 +60,24 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
                 goodsType.setTypeUpdateTime(new Date());
 
                 goodsTypeMapper.updateByPrimaryKeySelective(goodsType);
-                return ResultGenerator.genSuccessResult();
             } else {
-                return ResultGenerator.genFailResult("分类名称重复,请修改!!!");
+                throw new ServiceException("分类名称重复,请修改!!!");
             }
         } else {
-            return ResultGenerator.genFailResult("无效的分类ID");
+            throw new ServiceException("无效的分类ID!!!");
         }
     }
 
     @Override
-    public Result deleteType(String typeId) {
+    public void deleteType(String typeId) {
         GoodsType goodsType = goodsTypeMapper.selectByPrimaryKey(typeId);
 
         if (goodsType != null && goodsType.getTypeDelflag() != 0){
             goodsType.setTypeDelflag((byte) 0);
             goodsType.setTypeDelTime(new Date());
             goodsTypeMapper.updateByPrimaryKeySelective(goodsType);
-            return ResultGenerator.genSuccessResult();
         }else {
-            return ResultGenerator.genFailResult("无效ID");
+            throw new ServiceException("无效的分类ID!!!");
         }
     }
 

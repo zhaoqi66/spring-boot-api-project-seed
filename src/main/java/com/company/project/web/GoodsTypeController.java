@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author FHZD.xiaoxun
@@ -35,7 +34,9 @@ public class GoodsTypeController {
     @PostMapping("/add")
     public Result addType(@RequestBody GoodsTypeVm goodsTypeVm) {
         log.info("添加分类接口goodsTypeVm={}", goodsTypeVm.toString());
-        return goodsTypeService.addType(goodsTypeVm);
+
+        goodsTypeService.addType(goodsTypeVm);
+        return ResultGenerator.genSuccessResult();
     }
 
     /**
@@ -46,7 +47,8 @@ public class GoodsTypeController {
     @PutMapping("/update")
     public Result updateType(@RequestBody GoodsTypeVm goodsTypeVm) {
         log.info("分类修改接口 goodsTypeVm={}", goodsTypeVm);
-        return goodsTypeService.updateType(goodsTypeVm);
+        goodsTypeService.updateType(goodsTypeVm);
+        return ResultGenerator.genSuccessResult();
     }
 
     /**
@@ -57,7 +59,8 @@ public class GoodsTypeController {
     @DeleteMapping("/delete")
     public Result deleteType(@RequestParam(name = "typeId", required = true) String typeId) {
         log.info("分类删除接口 typeId={}", typeId);
-        return goodsTypeService.deleteType(typeId);
+        goodsTypeService.deleteType(typeId);
+        return ResultGenerator.genSuccessResult();
     }
 
     /**
