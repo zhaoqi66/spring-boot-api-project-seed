@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.project.dao.GoodsOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.company.project.model.GoodsOrder" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_show_id" property="orderShowId" jdbcType="VARCHAR" />
+    <result column="order_old_price" property="orderOldPrice" jdbcType="DECIMAL" />
+    <result column="order_pre_price" property="orderPrePrice" jdbcType="DECIMAL" />
+    <result column="order_price" property="orderPrice" jdbcType="DECIMAL" />
+    <result column="order_number" property="orderNumber" jdbcType="INTEGER" />
+    <result column="order_line_pay" property="orderLinePay" jdbcType="CHAR" />
+    <result column="express_price" property="expressPrice" jdbcType="DECIMAL" />
+    <result column="order_status" property="orderStatus" jdbcType="CHAR" />
+    <result column="order_create_time" property="orderCreateTime" jdbcType="TIMESTAMP" />
+    <result column="order_update_time" property="orderUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="order_pay_time" property="orderPayTime" jdbcType="TIMESTAMP" />
+    <result column="send_express" property="sendExpress" jdbcType="TIMESTAMP" />
+    <result column="get_goods_time" property="getGoodsTime" jdbcType="TIMESTAMP" />
+    <result column="order_cancel_time" property="orderCancelTime" jdbcType="TIMESTAMP" />
+    <result column="shipping_id" property="shippingId" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="order_buyer_message" property="orderBuyerMessage" jdbcType="VARCHAR" />
+    <result column="prepay_id" property="prepayId" jdbcType="VARCHAR" />
+    <result column="order_desc" property="orderDesc" jdbcType="VARCHAR" />
+    <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    order_id, order_show_id, order_old_price, order_pre_price, order_price, order_number, 
+    order_line_pay, express_price, order_status, order_create_time, order_update_time, 
+    order_pay_time, send_express, get_goods_time, order_cancel_time, shipping_id, open_id, 
+    order_buyer_message, prepay_id, order_desc, transaction_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.company.project.model.GoodsOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from goods_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods_order
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from goods_order
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.company.project.model.GoodsOrderExample" >
+    delete from goods_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.company.project.model.GoodsOrder" >
+    insert into goods_order (order_id, order_show_id, order_old_price, 
+      order_pre_price, order_price, order_number, 
+      order_line_pay, express_price, order_status, 
+      order_create_time, order_update_time, order_pay_time, 
+      send_express, get_goods_time, order_cancel_time, 
+      shipping_id, open_id, order_buyer_message, 
+      prepay_id, order_desc, transaction_id
+      )
+    values (#{orderId,jdbcType=VARCHAR}, #{orderShowId,jdbcType=VARCHAR}, #{orderOldPrice,jdbcType=DECIMAL}, 
+      #{orderPrePrice,jdbcType=DECIMAL}, #{orderPrice,jdbcType=DECIMAL}, #{orderNumber,jdbcType=INTEGER}, 
+      #{orderLinePay,jdbcType=CHAR}, #{expressPrice,jdbcType=DECIMAL}, #{orderStatus,jdbcType=CHAR}, 
+      #{orderCreateTime,jdbcType=TIMESTAMP}, #{orderUpdateTime,jdbcType=TIMESTAMP}, #{orderPayTime,jdbcType=TIMESTAMP}, 
+      #{sendExpress,jdbcType=TIMESTAMP}, #{getGoodsTime,jdbcType=TIMESTAMP}, #{orderCancelTime,jdbcType=TIMESTAMP}, 
+      #{shippingId,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{orderBuyerMessage,jdbcType=VARCHAR}, 
+      #{prepayId,jdbcType=VARCHAR}, #{orderDesc,jdbcType=VARCHAR}, #{transactionId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.company.project.model.GoodsOrder" >
+    insert into goods_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="orderShowId != null" >
+        order_show_id,
+      </if>
+      <if test="orderOldPrice != null" >
+        order_old_price,
+      </if>
+      <if test="orderPrePrice != null" >
+        order_pre_price,
+      </if>
+      <if test="orderPrice != null" >
+        order_price,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+      <if test="orderLinePay != null" >
+        order_line_pay,
+      </if>
+      <if test="expressPrice != null" >
+        express_price,
+      </if>
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+      <if test="orderCreateTime != null" >
+        order_create_time,
+      </if>
+      <if test="orderUpdateTime != null" >
+        order_update_time,
+      </if>
+      <if test="orderPayTime != null" >
+        order_pay_time,
+      </if>
+      <if test="sendExpress != null" >
+        send_express,
+      </if>
+      <if test="getGoodsTime != null" >
+        get_goods_time,
+      </if>
+      <if test="orderCancelTime != null" >
+        order_cancel_time,
+      </if>
+      <if test="shippingId != null" >
+        shipping_id,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="orderBuyerMessage != null" >
+        order_buyer_message,
+      </if>
+      <if test="prepayId != null" >
+        prepay_id,
+      </if>
+      <if test="orderDesc != null" >
+        order_desc,
+      </if>
+      <if test="transactionId != null" >
+        transaction_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderShowId != null" >
+        #{orderShowId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderOldPrice != null" >
+        #{orderOldPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderPrePrice != null" >
+        #{orderPrePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=INTEGER},
+      </if>
+      <if test="orderLinePay != null" >
+        #{orderLinePay,jdbcType=CHAR},
+      </if>
+      <if test="expressPrice != null" >
+        #{expressPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderCreateTime != null" >
+        #{orderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderUpdateTime != null" >
+        #{orderUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderPayTime != null" >
+        #{orderPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendExpress != null" >
+        #{sendExpress,jdbcType=TIMESTAMP},
+      </if>
+      <if test="getGoodsTime != null" >
+        #{getGoodsTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCancelTime != null" >
+        #{orderCancelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shippingId != null" >
+        #{shippingId,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderBuyerMessage != null" >
+        #{orderBuyerMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="prepayId != null" >
+        #{prepayId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDesc != null" >
+        #{orderDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionId != null" >
+        #{transactionId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.company.project.model.GoodsOrderExample" resultType="java.lang.Integer" >
+    select count(*) from goods_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update goods_order
+    <set >
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderShowId != null" >
+        order_show_id = #{record.orderShowId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderOldPrice != null" >
+        order_old_price = #{record.orderOldPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orderPrePrice != null" >
+        order_pre_price = #{record.orderPrePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orderPrice != null" >
+        order_price = #{record.orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orderNumber != null" >
+        order_number = #{record.orderNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderLinePay != null" >
+        order_line_pay = #{record.orderLinePay,jdbcType=CHAR},
+      </if>
+      <if test="record.expressPrice != null" >
+        express_price = #{record.expressPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orderStatus != null" >
+        order_status = #{record.orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.orderCreateTime != null" >
+        order_create_time = #{record.orderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderUpdateTime != null" >
+        order_update_time = #{record.orderUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderPayTime != null" >
+        order_pay_time = #{record.orderPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sendExpress != null" >
+        send_express = #{record.sendExpress,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.getGoodsTime != null" >
+        get_goods_time = #{record.getGoodsTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderCancelTime != null" >
+        order_cancel_time = #{record.orderCancelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.shippingId != null" >
+        shipping_id = #{record.shippingId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openId != null" >
+        open_id = #{record.openId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderBuyerMessage != null" >
+        order_buyer_message = #{record.orderBuyerMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prepayId != null" >
+        prepay_id = #{record.prepayId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderDesc != null" >
+        order_desc = #{record.orderDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transactionId != null" >
+        transaction_id = #{record.transactionId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update goods_order
+    set order_id = #{record.orderId,jdbcType=VARCHAR},
+      order_show_id = #{record.orderShowId,jdbcType=VARCHAR},
+      order_old_price = #{record.orderOldPrice,jdbcType=DECIMAL},
+      order_pre_price = #{record.orderPrePrice,jdbcType=DECIMAL},
+      order_price = #{record.orderPrice,jdbcType=DECIMAL},
+      order_number = #{record.orderNumber,jdbcType=INTEGER},
+      order_line_pay = #{record.orderLinePay,jdbcType=CHAR},
+      express_price = #{record.expressPrice,jdbcType=DECIMAL},
+      order_status = #{record.orderStatus,jdbcType=CHAR},
+      order_create_time = #{record.orderCreateTime,jdbcType=TIMESTAMP},
+      order_update_time = #{record.orderUpdateTime,jdbcType=TIMESTAMP},
+      order_pay_time = #{record.orderPayTime,jdbcType=TIMESTAMP},
+      send_express = #{record.sendExpress,jdbcType=TIMESTAMP},
+      get_goods_time = #{record.getGoodsTime,jdbcType=TIMESTAMP},
+      order_cancel_time = #{record.orderCancelTime,jdbcType=TIMESTAMP},
+      shipping_id = #{record.shippingId,jdbcType=VARCHAR},
+      open_id = #{record.openId,jdbcType=VARCHAR},
+      order_buyer_message = #{record.orderBuyerMessage,jdbcType=VARCHAR},
+      prepay_id = #{record.prepayId,jdbcType=VARCHAR},
+      order_desc = #{record.orderDesc,jdbcType=VARCHAR},
+      transaction_id = #{record.transactionId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.project.model.GoodsOrder" >
+    update goods_order
+    <set >
+      <if test="orderShowId != null" >
+        order_show_id = #{orderShowId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderOldPrice != null" >
+        order_old_price = #{orderOldPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderPrePrice != null" >
+        order_pre_price = #{orderPrePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderPrice != null" >
+        order_price = #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=INTEGER},
+      </if>
+      <if test="orderLinePay != null" >
+        order_line_pay = #{orderLinePay,jdbcType=CHAR},
+      </if>
+      <if test="expressPrice != null" >
+        express_price = #{expressPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderCreateTime != null" >
+        order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderUpdateTime != null" >
+        order_update_time = #{orderUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderPayTime != null" >
+        order_pay_time = #{orderPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendExpress != null" >
+        send_express = #{sendExpress,jdbcType=TIMESTAMP},
+      </if>
+      <if test="getGoodsTime != null" >
+        get_goods_time = #{getGoodsTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCancelTime != null" >
+        order_cancel_time = #{orderCancelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shippingId != null" >
+        shipping_id = #{shippingId,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderBuyerMessage != null" >
+        order_buyer_message = #{orderBuyerMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="prepayId != null" >
+        prepay_id = #{prepayId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDesc != null" >
+        order_desc = #{orderDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionId != null" >
+        transaction_id = #{transactionId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.company.project.model.GoodsOrder" >
+    update goods_order
+    set order_show_id = #{orderShowId,jdbcType=VARCHAR},
+      order_old_price = #{orderOldPrice,jdbcType=DECIMAL},
+      order_pre_price = #{orderPrePrice,jdbcType=DECIMAL},
+      order_price = #{orderPrice,jdbcType=DECIMAL},
+      order_number = #{orderNumber,jdbcType=INTEGER},
+      order_line_pay = #{orderLinePay,jdbcType=CHAR},
+      express_price = #{expressPrice,jdbcType=DECIMAL},
+      order_status = #{orderStatus,jdbcType=CHAR},
+      order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
+      order_update_time = #{orderUpdateTime,jdbcType=TIMESTAMP},
+      order_pay_time = #{orderPayTime,jdbcType=TIMESTAMP},
+      send_express = #{sendExpress,jdbcType=TIMESTAMP},
+      get_goods_time = #{getGoodsTime,jdbcType=TIMESTAMP},
+      order_cancel_time = #{orderCancelTime,jdbcType=TIMESTAMP},
+      shipping_id = #{shippingId,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=VARCHAR},
+      order_buyer_message = #{orderBuyerMessage,jdbcType=VARCHAR},
+      prepay_id = #{prepayId,jdbcType=VARCHAR},
+      order_desc = #{orderDesc,jdbcType=VARCHAR},
+      transaction_id = #{transactionId,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+</mapper>

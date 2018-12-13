@@ -73,7 +73,7 @@ public class Goods {
     /**
      * 商品删除时间
      */
-    @Column(name = "goods_delflag")
+    @Column(name = "goods_deltime")
     private Date goodsDeltime;
 
     /**
