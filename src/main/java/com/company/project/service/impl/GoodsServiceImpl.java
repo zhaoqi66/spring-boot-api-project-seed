@@ -61,6 +61,7 @@ public class GoodsServiceImpl implements GoodsService {
         goods.setGoodsImg(s);
         goods.setGoodsCreateTime(new Date());
         goods.setGoodsDelflag((byte) 1);
+        goods.setGoodsSort(1);
         goods.setGoodsBrief(goodsVm.getGoodsBrief());
         goods.setBrandId(goodsVm.getBrandId());
         goods.setTypeId(goodsVm.getTypeId());
@@ -151,6 +152,38 @@ public class GoodsServiceImpl implements GoodsService {
         map.put("pageNumber", pageNumber);
         map.put("pageSize", pageSize);
         return map;
+    }
+
+    @Override
+    public void recommend(String goodsId) {
+        GoodsExample goodsExample = new GoodsExample();
+        goodsExample.createCriteria().andGoodsSortEqualTo(999);
+        List<Goods> list = goodsMapper.selectByExample(goodsExample);
+        if (list.size() > 4){
+            throw new ServiceException("当前加推商品已达上限,请取消其他商品推荐后再加推");
+        }
+
+        Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+        if (goods == null){
+            throw new ServiceException("当前商品不存在");
+        }
+        goods.setGoodsSort(999);
+        goods.setGoodsUpdateTime(new Date());
+        goodsMapper.updateByPrimaryKeySelective(goods);
+    }
+
+    @Override
+    public void unRecommend(String goodsId) {
+        Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+        if (goods == null){
+            throw new ServiceException("当前商品不存在");
+        }else if (goods.getGoodsSort()!= 999){
+            throw new ServiceException("当前商品未被推荐");
+        }
+
+        goods.setGoodsSort(1);
+        goods.setGoodsUpdateTime(new Date());
+        goodsMapper.updateByPrimaryKeySelective(goods);
     }
 
     /**

@@ -16,4 +16,8 @@ public interface GoodsService {
     void deleteProduct(String goodsId);
 
     Map<String,Object> findProductPage(String goodsName, int pageNumber, int pageSize);
+
+    void recommend(String goodsId);
+
+    void unRecommend(String goodsId);
 }

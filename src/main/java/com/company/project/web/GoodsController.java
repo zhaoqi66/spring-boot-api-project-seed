@@ -83,4 +83,30 @@ public class GoodsController {
         return ResultGenerator.genSuccessResult(map);
     }
 
+    /**
+     * 商品推荐
+     *
+     * @param goodsId
+     * @return
+     */
+    @PutMapping("/recommend")
+    public Result recommend(@RequestParam(name = "goodsId", required = true) String goodsId) {
+        log.info("商品推荐接口 goodsId={}", goodsId);
+        goodsService.recommend(goodsId);
+        return ResultGenerator.genSuccessResult();
+    }
+
+    /**
+     * 商品推荐
+     *
+     * @param goodsId
+     * @return
+     */
+    @PutMapping("/unRecommend")
+    public Result unRecommend(@RequestParam(name = "goodsId", required = true) String goodsId) {
+        log.info("商品取消推荐接口 goodsId={}", goodsId);
+        goodsService.unRecommend(goodsId);
+        return ResultGenerator.genSuccessResult();
+    }
+
 }

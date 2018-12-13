@@ -59,10 +59,5 @@ public class CheckLogin {
             log.warn("【登陆校验】Redis中查不到token");
             throw new ServiceException("token不符合标准,需要重新登陆!");
         }
-
-
-
-
-
     }
 }
