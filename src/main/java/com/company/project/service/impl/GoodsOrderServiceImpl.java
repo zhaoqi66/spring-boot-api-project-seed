@@ -37,8 +37,10 @@ public class GoodsOrderServiceImpl implements GoodsOrderService {
         PageHelper.startPage(pageNumber, pageSize);
 
         GoodsOrderExample goodsOrderExample = new GoodsOrderExample();
-        goodsOrderExample.createCriteria().andOrderShowIdLike("%" + orderShowId + "%");
-        goodsOrderExample.setOrderByClause("order_create_time");
+        if (null!=orderShowId){
+            goodsOrderExample.createCriteria().andOrderShowIdLike("%" + orderShowId + "%");
+        }
+        goodsOrderExample.setOrderByClause("order_create_time desc");
         List<GoodsOrder> goodsOrders = goodsOrderMapper.selectByExample(goodsOrderExample);
 
         ArrayList<SysOrderVo> sysOrderVos = new ArrayList<>();

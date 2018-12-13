@@ -109,7 +109,7 @@ public class GoodsOrder {
      * 用户ID
      */
     @Column(name = "open_id")
-    private Integer openId;
+    private String openId;
 
     /**
      * 买家留言
@@ -428,7 +428,7 @@ public class GoodsOrder {
      *
      * @return open_id - 用户ID
      */
-    public Integer getOpenId() {
+    public String getOpenId() {
         return openId;
     }
 
@@ -437,7 +437,7 @@ public class GoodsOrder {
      *
      * @param openId 用户ID
      */
-    public void setOpenId(Integer openId) {
+    public void setOpenId(String openId) {
         this.openId = openId;
     }
 
