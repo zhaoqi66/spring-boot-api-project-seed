@@ -25,7 +25,7 @@ import java.util.*;
  * @date 2018/11/15
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
@@ -115,7 +115,7 @@ public class GoodsServiceImpl implements GoodsService {
             goods.setGoodsDeltime(new Date());
 
             goodsMapper.updateByPrimaryKeySelective(goods);
-        }else {
+        } else {
             throw new ServiceException("无效ID!!!");
         }
     }
@@ -127,8 +127,8 @@ public class GoodsServiceImpl implements GoodsService {
 
         GoodsExample goodsExample = new GoodsExample();
         if (goodsName != null) {
-            goodsExample.createCriteria().andGoodsNameLike("%"+goodsName+"%").andGoodsDelflagEqualTo((byte) 1);
-        }else {
+            goodsExample.createCriteria().andGoodsNameLike("%" + goodsName + "%").andGoodsDelflagEqualTo((byte) 1);
+        } else {
             goodsExample.createCriteria().andGoodsDelflagEqualTo((byte) 1);
         }
         goodsExample.setOrderByClause("goods_create_time desc");
@@ -136,12 +136,12 @@ public class GoodsServiceImpl implements GoodsService {
 
         PageInfo<Goods> goodsPageInfo = new PageInfo<>(goods);
         ArrayList<GoodsDTO> list = new ArrayList<>();
-        if (goods.size() != 0){
-            for (Goods g: goods) {
+        if (goods.size() != 0) {
+            for (Goods g : goods) {
                 GoodsBrand goodsBrand = goodsBrandMapper.selectByPrimaryKey(g.getBrandId());
                 GoodsType goodsType = goodsTypeMapper.selectByPrimaryKey(g.getTypeId());
                 String[] imgSplit = g.getGoodsImg().split(",");
-                GoodsDTO goodsDTO = new GoodsDTO(g,imgSplit,goodsType.getTypeName(),goodsBrand.getBrandName());
+                GoodsDTO goodsDTO = new GoodsDTO(g, imgSplit, goodsType.getTypeName(), goodsBrand.getBrandName());
                 list.add(goodsDTO);
             }
         }
@@ -159,12 +159,12 @@ public class GoodsServiceImpl implements GoodsService {
         GoodsExample goodsExample = new GoodsExample();
         goodsExample.createCriteria().andGoodsSortEqualTo(999);
         List<Goods> list = goodsMapper.selectByExample(goodsExample);
-        if (list.size() > 4){
+        if (list.size() > 4) {
             throw new ServiceException("当前加推商品已达上限,请取消其他商品推荐后再加推");
         }
 
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
-        if (goods == null){
+        if (goods == null || goods.getGoodsDelflag() == 0) {
             throw new ServiceException("当前商品不存在");
         }
         goods.setGoodsSort(999);
@@ -175,14 +175,44 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public void unRecommend(String goodsId) {
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
-        if (goods == null){
+        if (goods == null || goods.getGoodsDelflag() == 0) {
             throw new ServiceException("当前商品不存在");
-        }else if (goods.getGoodsSort()!= 999){
+        } else if (goods.getGoodsSort() != 999) {
             throw new ServiceException("当前商品未被推荐");
         }
 
         goods.setGoodsSort(1);
         goods.setGoodsUpdateTime(new Date());
+        goodsMapper.updateByPrimaryKeySelective(goods);
+    }
+
+    @Override
+    public void putOnSale(String goodsId) {
+        Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+        if (goods == null ||goods.getGoodsDelflag() == 0) {
+            throw new ServiceException("当前商品不存在");
+        } else if (goods.getGoodsStatus() == 1) {
+            throw new ServiceException("当前商品已被上架");
+        }
+
+        goods.setGoodsStatus((byte) 1);
+        goods.setGoodsUpdateTime(new Date());
+        goods.setGoodsAddedTime(new Date());
+        goodsMapper.updateByPrimaryKeySelective(goods);
+    }
+
+    @Override
+    public void pullOffShelves(String goodsId) {
+        Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+        if (goods == null || goods.getGoodsDelflag() == 0) {
+            throw new ServiceException("当前商品不存在");
+        } else if (goods.getGoodsStatus() == 0) {
+            throw new ServiceException("当前商品已被下架");
+        }
+
+        goods.setGoodsStatus((byte) 0);
+        goods.setGoodsUpdateTime(new Date());
+        goods.setGoodsUnaddedTime(new Date());
         goodsMapper.updateByPrimaryKeySelective(goods);
     }
 
@@ -193,17 +223,16 @@ public class GoodsServiceImpl implements GoodsService {
      * @return
      */
     private String obtainString(final String[] picUrl) {
-        String s = new String();
+        StringBuilder s = new StringBuilder();
         if (picUrl != null) {
             for (int i = 0; i < picUrl.length; i++) {
                 if (i == picUrl.length - 1) {
-                    s = s + picUrl[i];
+                    s.append(picUrl[i]);
                 } else {
-
-                    s = s + picUrl[i] + ",";
+                    s.append(picUrl[i]).append(",");
                 }
             }
         }
-        return s;
+        return s.toString();
     }
 }

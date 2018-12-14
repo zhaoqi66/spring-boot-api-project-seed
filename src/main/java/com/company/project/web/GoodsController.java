@@ -84,6 +84,32 @@ public class GoodsController {
     }
 
     /**
+     * 商品上架
+     *
+     * @param goodsId
+     * @return
+     */
+    @PutMapping("/putOnShelves")
+    public Result putOnSale(@RequestParam(name = "goodsId", required = true) String goodsId) {
+        log.info("商品上架接口 goodsId={}", goodsId);
+        goodsService.putOnSale(goodsId);
+        return ResultGenerator.genSuccessResult();
+    }
+
+    /**
+     * 商品下架
+     *
+     * @param goodsId
+     * @return
+     */
+    @PutMapping("/pullOffShelves")
+    public Result pullOffShelves(@RequestParam(name = "goodsId", required = true) String goodsId) {
+        log.info("商品下架接口 goodsId={}", goodsId);
+        goodsService.pullOffShelves(goodsId);
+        return ResultGenerator.genSuccessResult();
+    }
+
+    /**
      * 商品推荐
      *
      * @param goodsId
@@ -97,7 +123,7 @@ public class GoodsController {
     }
 
     /**
-     * 商品推荐
+     * 商品取消推荐
      *
      * @param goodsId
      * @return

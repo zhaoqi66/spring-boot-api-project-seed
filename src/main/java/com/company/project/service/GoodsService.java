@@ -20,4 +20,8 @@ public interface GoodsService {
     void recommend(String goodsId);
 
     void unRecommend(String goodsId);
+
+    void putOnSale(String goodsId);
+
+    void pullOffShelves(String goodsId);
 }
