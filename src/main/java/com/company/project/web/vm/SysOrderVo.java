@@ -16,6 +16,11 @@ import java.util.List;
 public class SysOrderVo {
 
     /**
+     * 订单id
+     */
+    private String orderId;
+
+    /**
      * 订单展示ID
      */
     private String orderShowId;
@@ -36,12 +41,17 @@ public class SysOrderVo {
     private Date orderCreateTime;
 
     /**
-     * 订单详情列表
+     * 商品名称
      */
-    private List<GoodsOrderProduct> goodsOrderProductList;
+    private List<String> orderGoodsTitle;
 
     /**
-     * 订单物流情况
+     * 收货人名字
      */
-    private GoodsOrderShipping goodsOrderShipping;
+    private String shippingCustomerName;
+
+    /**
+     * 收货人联系方式
+     */
+    private String shippingCustomerTelephone;
 }
