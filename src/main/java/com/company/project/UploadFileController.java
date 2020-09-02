@@ -4,6 +4,7 @@ package com.company.project;
 import com.company.project.core.JsonResult;
 import com.company.project.service.UploadFileService;
 import com.company.project.web.vm.FileKeyVm;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,7 @@ public class UploadFileController {
     public JsonResult deletePicture(@RequestBody FileKeyVm vm) {
         logger.info("============>图片删除 FileKeyVm={}", vm);
         String deletePicture = uploadFileService.deletePicture(vm.getFileKey());
+
         return JsonResult.ok(deletePicture);
     }
 

@@ -26,7 +26,6 @@ import java.util.UUID;
 public class AliyunOSSUtil {
     public static final Logger logger = LoggerFactory.getLogger(AliyunOSSUtil.class);
 
-
     public static  String upload(File file){
         logger.info("=========>OSS文件上传开始："+file.getName());
         String endpoint= ConstantProperties.END_POINT;

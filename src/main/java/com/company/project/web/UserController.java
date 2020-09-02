@@ -67,10 +67,10 @@ public class UserController {
         System.out.println(s);
         Boolean b = redisTemplate.opsForHash().hasKey(Commins.map,username);
         System.out.println(b);
-
-
         CookieUtil.removeCookie(response,"token");
         CookieUtil.removeCookie(response,"username");
+
+
         return ResultGenerator.genSuccessResult("退出成功！");
     }
 

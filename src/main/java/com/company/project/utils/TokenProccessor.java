@@ -1,6 +1,5 @@
 package com.company.project.utils;
 
-import sun.misc.BASE64Encoder;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -39,8 +38,9 @@ private TokenProccessor(){}
                 MessageDigest md = MessageDigest.getInstance("md5");
                 byte md5[] =  md.digest(token.getBytes());
                 //base64编码--任意二进制编码明文字符   adfsdfsdfsf
-                BASE64Encoder encoder = new BASE64Encoder();
-                return encoder.encode(md5);
+                //BASE64Encoder encoder = new BASE64Encoder();
+                //return encoder.encode(md5);
+                return "";
             } catch (NoSuchAlgorithmException e) {
                 throw new RuntimeException(e);
             }
